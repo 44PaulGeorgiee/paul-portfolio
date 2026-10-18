@@ -46,8 +46,8 @@ export type Profile = {
 }
 
 export const profile: Profile = {
-  name: 'Your Name',
-  firstName: 'Your Name',
+  name: 'Paul John Rosellosa',
+  firstName: 'Paul',
   handle: '@yourhandle',
   role: 'PLACEHOLDER - your title',
   avatarSrc: '/avatar.svg',
