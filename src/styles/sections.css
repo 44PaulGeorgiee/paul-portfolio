@@ -459,6 +459,36 @@
   color: var(--navy);
 }
 
+.tools-marquee__group {
+  align-self: center;
+  flex: 0 0 auto;
+  max-width: 112px;
+  margin-right: -56px;
+  color: var(--orange-ink);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+.tools-marquee__mark {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: var(--tint-strong);
+  color: var(--navy);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+@media (max-width: 1099px) {
+  .tools-marquee__group { max-width: 64px; margin-right: 0; font-size: 8px; text-align: center; }
+  .tools-marquee__mark { width: 22px; height: 22px; font-size: 7px; }
+}
+
 @keyframes marquee {
   0%   { transform: translate(0); }
   100% { transform: translate(-50%); }

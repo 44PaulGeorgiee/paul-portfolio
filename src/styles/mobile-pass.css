@@ -61,15 +61,14 @@ html { -webkit-tap-highlight-color: transparent; }
   /* ---------- 3. Headline: one line at every phone width ----------
      Sized to the content box (viewport less both panel gutters) divided by
      --headline-em, the headline's own width in em at this weight and tracking.
-     Retune it when you change the line in profile.ts: set the headline in a
-     700-weight system font at 100px with letter-spacing -0.024em, divide its
-     width by 100, add 2% slack. 15.4 fits the placeholder headline in
-     profile.ts (34 characters); a 30-character line needs about 12.8.
+    retune it when you change the mobile line in Home.tsx: set the headline in
+    a 700-weight system font at 100px with letter-spacing -0.03em, divide its
+    width by 100, add 2% slack. "Less manual work." measures about 8.3em.
      Never larger than home.css's clamp. Not `nowrap`: a longer line, a larger
      text setting or Android font scaling wraps instead of clipping.
      .boot__title is the intro's copy and must match exactly (boot.css: change
      one, change both). */
-  :root { --headline-em: 15.4; }
+  :root { --headline-em: 8.4; }
   .home__title,
   .boot__title { font-size: min(clamp(30px, 3.5vw, 72px), calc((100vw - 2 * var(--panel-x)) / var(--headline-em))); }
 
@@ -109,7 +108,7 @@ html { -webkit-tap-highlight-color: transparent; }
   .home .tools-marquee__item {
     flex-direction: column;
     gap: 6px;
-    width: 72px;
+    width: 88px;
     padding-right: 0;
     font-size: 11px;
     font-weight: 500;
@@ -130,9 +129,12 @@ html { -webkit-tap-highlight-color: transparent; }
   .home .tools-marquee__icon,
   .home .tools-marquee__img { width: 26px; height: 26px; }
   .home .tools-marquee__label {
-    max-width: 70px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    width: 88px;
+    max-width: none;
+    overflow: visible;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.2;
     color: var(--tools-label);
   }
 

@@ -60,10 +60,10 @@ export default function ContactGrid() {
       <header className="pgrid__head">
         <span className="pgrid__eyebrow">FAQs / Contact</span>
         <h1 className="pgrid__title" id="contact-title">
-          Your contact headline goes here.
+          Let's find the bottleneck.
         </h1>
         <p className="pgrid__lede">
-          PLACEHOLDER - tell me what to put here: one or two lines inviting people to write and saying what they get back.
+          Have a repetitive process, an inefficient workflow, or a system that needs better visibility? Let's explore what could be improved.
         </p>
       </header>
 
@@ -104,19 +104,23 @@ export default function ContactGrid() {
           </ul>
 
           <div className="cgrid__direct">
-            <a className="cgrid__mail" href={`mailto:${profile.email}`}>
-              <EnvelopeSimple size={16} weight="fill" aria-hidden="true" />
-              <span>{profile.email}</span>
-            </a>
-            <ul className="cgrid__socials" role="list">
-              {profile.socials.map((s) => (
-                <li key={s.label}>
-                  <a className="cgrid__social" href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}>
-                    <img src={s.iconPath} alt="" loading="lazy" decoding="async" />
-                  </a>
-                </li>
-              ))}
-            </ul>
+            {profile.email && (
+              <a className="cgrid__mail" href={`mailto:${profile.email}`}>
+                <EnvelopeSimple size={16} weight="fill" aria-hidden="true" />
+                <span>{profile.email}</span>
+              </a>
+            )}
+            {profile.socials.length > 0 && (
+              <ul className="cgrid__socials" role="list">
+                {profile.socials.map((s) => (
+                  <li key={s.label}>
+                    <a className="cgrid__social" href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}>
+                      <img src={s.iconPath} alt="" loading="lazy" decoding="async" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </aside>
 
@@ -128,12 +132,12 @@ export default function ContactGrid() {
                 <CheckCircle size={30} weight="fill" />
               </span>
               <h2 className="cgrid__done-title">
-                {status.via === 'webhook' ? 'Got it.' : 'Your mail app has it.'}
+                {status.via === 'webhook' ? 'Submission accepted.' : 'Draft ready to send.'}
               </h2>
               <p className="cgrid__done-body">
                 {status.via === 'webhook'
-                  ? 'It is in my inbox and on my phone. You will hear back within one business day.'
-                  : 'The message is laid out and addressed. Press send there and you will hear back within one business day.'}
+                  ? 'The configured endpoint accepted your submission.'
+                  : 'Your mail app has a draft. Review it and press send to complete the handoff.'}
               </p>
               <button type="button" className="cgrid__again" onClick={() => setStatus({ kind: 'idle' })}>
                 Write another
@@ -165,7 +169,7 @@ export default function ContactGrid() {
 
               <label className="cgrid__field">
                 <span className="cgrid__label">Email</span>
-                <input type="email" name="email" autoComplete="email" required maxLength={MAX_EMAIL} placeholder="you@yourbusiness.com" />
+                <input type="email" name="email" autoComplete="email" required maxLength={MAX_EMAIL} placeholder="Work email" />
               </label>
 
               <label className="cgrid__field cgrid__field--grow">
@@ -188,7 +192,7 @@ export default function ContactGrid() {
                   <span className="cgrid__submit-plane" aria-hidden="true">
                     <PaperPlaneTilt size={17} weight="fill" />
                   </span>
-                  <span className="cgrid__submit-label">{busy ? 'Sending' : 'Send message'}</span>
+                  <span className="cgrid__submit-label">{busy ? 'Sending' : 'Discuss Your Workflow'}</span>
                   <ArrowUpRight className="cgrid__submit-arrow" size={15} weight="bold" aria-hidden="true" />
                 </button>
                 {status.kind === 'error' ? (
@@ -197,7 +201,7 @@ export default function ContactGrid() {
                     {status.note}
                   </span>
                 ) : (
-                  <span className="cgrid__hint">Short reassurance line, e.g. your reply time.</span>
+                  <span className="cgrid__hint">Contact delivery needs a valid address or configured endpoint.</span>
                 )}
               </div>
             </form>

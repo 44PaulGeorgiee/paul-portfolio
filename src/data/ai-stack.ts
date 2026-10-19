@@ -1,36 +1,27 @@
 /**
- * The systems tree shown in the Projects "systems" pop-up (and as chips on
- * Home and in the Projects bento card).
+ * The grouped tools and capabilities shown in the Projects tools view and
+ * summarized as chips on Home.
  *
  * This file is the ONLY place node copy lives. AIStack.tsx and AIStackGrid.tsx
  * render whatever shape they find here, so swapping in content is a data edit
  * and never a JSX edit. Keep the exported names and types stable.
  *
- * Every value below is a PLACEHOLDER. Shape rules:
- * - The root is you. Its children are the categories (branches).
- * - A branch with `status` is itself a system; a branch without one is a
- *   group whose children are the systems.
- * - Status is what the thing actually does today: "Live" (in use by others),
- *   "Internal" (works, you use it), "Beta".
- * - Logo marks in AIStackGrid.tsx are keyed by the node `id` below.
+ * Shape rules:
+ * - The root is the profile. Its children are category branches.
+ * - Leaves with `Internal` are tools currently used; `Beta` marks skills in
+ *   development. Use `Live` only when a real externally used system exists.
+ * - Logo marks are optional and must match an asset that exists in public/.
  */
 
 import {
   Sparkle,
-  Coffee,
-  Robot,
   Article,
-  FilmSlate,
+  Robot,
   UsersThree,
   Database,
-  SlackLogo,
-  MagnifyingGlass,
-  ChatCircleDots,
   FlowArrow,
-  PhoneCall,
   Browser,
-  Broadcast,
-  Timer,
+  Plug,
 } from '@/components/slab'
 import type { Icon } from '@/components/slab'
 import { profile } from '@/data/profile'
@@ -56,143 +47,130 @@ export type StackNode = {
   children?: StackNode[]
 }
 
-const ANTHROPIC: StackLogo = { src: '/icons/anthropic.svg', name: 'Anthropic' }
-const OPENAI: StackLogo = { src: '/icons/openai.svg', name: 'OpenAI' }
-const SLACK: StackLogo = { src: '/icons/slack.svg', name: 'Slack' }
-const NOUS: StackLogo = { src: '/icons/nousresearch.svg', name: 'Nous Research' }
+const GOOGLE_WORKSPACE: StackLogo = { src: '/icons/googleworkspace.svg', name: 'Google Workspace' }
 
-const WHAT = 'PLACEHOLDER - tell me what to put here: one plain line on what this does.'
-const STACK = 'PLACEHOLDER - model, tools, where it runs'
-
-/** Single root: you. Branches are the categories. */
+/** Grouped tools and capabilities. Beta denotes skills still being developed. */
 export const aiStack: StackNode = {
   id: 'root',
   Icon: Sparkle,
   name: profile.name,
-  what: 'PLACEHOLDER - tell me what to put here: one line on the systems you build and run.',
-  stack: 'PLACEHOLDER - your brand',
+  what: 'Current operations tools, alongside APIs, JSON, AI workflows, and integration skills in development.',
+  stack: 'Healthcare operations · quality assurance · reporting · workflow improvement',
   children: [
     {
-      id: 'project-a',
-      Icon: Coffee,
-      logos: [ANTHROPIC],
-      name: 'Project A',
-      what: WHAT,
-      stack: STACK,
-      status: 'Live',
-    },
-    {
-      id: 'category-one',
-      Icon: Robot,
-      name: 'Category One',
-      what: 'PLACEHOLDER - tell me what to put here: what the systems in this group have in common.',
+      id: 'core-tools',
+      Icon: Article,
+      name: 'Core tools',
+      what: 'Tools used for spreadsheet work, reporting, and operational automation.',
       children: [
         {
-          id: 'project-b',
+          id: 'excel',
           Icon: Article,
-          logos: [ANTHROPIC],
-          name: 'Project B',
-          what: WHAT,
-          stack: STACK,
+          name: 'Microsoft Excel',
+          what: 'Spreadsheet analysis and tools for operational processes.',
           status: 'Internal',
         },
         {
-          id: 'project-c',
-          Icon: FilmSlate,
-          logos: [OPENAI],
-          name: 'Project C',
-          what: WHAT,
-          stack: STACK,
+          id: 'google-sheets',
+          Icon: Article,
+          logos: [GOOGLE_WORKSPACE],
+          name: 'Google Sheets',
+          what: 'Shared spreadsheet-based tracking and reporting.',
           status: 'Internal',
         },
         {
-          id: 'project-d',
-          Icon: UsersThree,
-          logos: [ANTHROPIC],
-          name: 'Project D',
-          what: WHAT,
-          stack: STACK,
+          id: 'sql',
+          Icon: Database,
+          name: 'SQL',
+          what: 'Querying and organizing data for analysis.',
           status: 'Internal',
         },
-      ],
-    },
-    {
-      id: 'category-two',
-      Icon: Database,
-      name: 'Category Two',
-      what: 'PLACEHOLDER - tell me what to put here: what the systems in this group have in common.',
-      children: [
         {
-          id: 'project-e',
-          Icon: SlackLogo,
-          logos: [ANTHROPIC, SLACK],
-          name: 'Project E',
-          what: WHAT,
-          stack: STACK,
-          status: 'Live',
-        },
-        {
-          id: 'project-f',
-          Icon: MagnifyingGlass,
-          logos: [ANTHROPIC],
-          name: 'Project F',
-          what: WHAT,
-          stack: STACK,
-          status: 'Live',
-        },
-      ],
-    },
-    {
-      id: 'category-three',
-      Icon: ChatCircleDots,
-      name: 'Category Three',
-      what: 'PLACEHOLDER - tell me what to put here: what the systems in this group have in common.',
-      children: [
-        {
-          id: 'project-g',
+          id: 'power-automate',
           Icon: FlowArrow,
-          logos: [ANTHROPIC],
-          name: 'Project G',
-          what: WHAT,
-          stack: STACK,
-          status: 'Live',
+          name: 'Power Automate',
+          what: 'Workflow automation for routine notifications and handoffs.',
+          status: 'Internal',
         },
         {
-          id: 'project-h',
-          Icon: PhoneCall,
-          logos: [ANTHROPIC],
-          name: 'Project H',
-          what: WHAT,
-          stack: STACK,
+          id: 'vba',
+          Icon: Article,
+          name: 'VBA',
+          what: 'Excel macros for streamlining recurring spreadsheet tasks.',
+          status: 'Internal',
+        },
+        {
+          id: 'apps-script',
+          Icon: FlowArrow,
+          logos: [GOOGLE_WORKSPACE],
+          name: 'Google Apps Script',
+          what: 'Scripting for Google Workspace tasks and data flows.',
+          status: 'Internal',
+        },
+      ],
+    },
+    {
+      id: 'integration-analytics',
+      Icon: Database,
+      name: 'Integration and analytics',
+      what: 'Developing ways to move information between systems and make reporting clearer.',
+      children: [
+        {
+          id: 'apis',
+          Icon: Plug,
+          name: 'APIs',
+          what: 'Learning to connect services through documented interfaces.',
           status: 'Beta',
         },
         {
-          id: 'project-i',
+          id: 'json',
+          Icon: Article,
+          name: 'JSON',
+          what: 'Working with structured data used in system integrations.',
+          status: 'Beta',
+        },
+        {
+          id: 'http-requests',
           Icon: Browser,
-          logos: [ANTHROPIC],
-          name: 'Project I',
-          what: WHAT,
-          stack: STACK,
-          status: 'Live',
+          name: 'HTTP requests',
+          what: 'Developing practical request and response handling.',
+          status: 'Beta',
+        },
+        {
+          id: 'data-dashboards',
+          Icon: Database,
+          name: 'Data dashboards',
+          what: 'Reporting views that make operational indicators easier to monitor.',
+          status: 'Internal',
         },
       ],
     },
     {
-      id: 'project-j',
-      Icon: Broadcast,
-      logos: [NOUS],
-      name: 'Project J',
-      what: WHAT,
-      stack: STACK,
-      status: 'Live',
+      id: 'developing',
+      Icon: Robot,
+      name: 'Areas in development',
+      what: 'Exploratory capabilities, not claims of production-ready client systems.',
       children: [
         {
-          id: 'project-k',
-          Icon: Timer,
-          name: 'Project K',
-          what: WHAT,
-          stack: STACK,
-          status: 'Live',
+          id: 'ai-workflows',
+          Icon: Robot,
+          name: 'AI workflows',
+          what: 'Exploring where AI can assist a workflow with appropriate review and safeguards.',
+          status: 'Beta',
+        },
+        {
+          id: 'lead-automation',
+          Icon: UsersThree,
+          name: 'Lead automation',
+          what: 'Developing lead tracking and follow-up workflow concepts.',
+          status: 'Beta',
+        },
+        {
+          id: 'system-integration',
+          Icon: FlowArrow,
+          name: 'System integration',
+          what: 'Expanding skills for connecting existing business systems.',
+          status: 'Beta',
         },
       ],
     },

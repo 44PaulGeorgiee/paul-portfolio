@@ -1,6 +1,6 @@
 # Portfolio Template
 
-A personal portfolio with a fixed profile rail, an animated contour background, a bento home screen, a 3D page carousel, and a separate app-style layout for phones. Every piece of content is a placeholder. You swap in your own.
+A personal portfolio for Paul John Rosellosa, focused on healthcare operations and practical workflow automation. It has a fixed profile rail, an animated contour background, a bento home screen, a 3D template-page carousel, and a separate app-style layout for phones. Work examples use qualitative descriptions; showcase concepts and page templates are labeled as prototypes or previews.
 
 Stack: Vite 6, React 19, TypeScript, plain CSS custom properties, Three.js, GSAP, Lenis, React Router 7, Phosphor icons, Poppins.
 
@@ -31,20 +31,22 @@ npm run lint       # ESLint with the TypeScript parser and the React hooks rules
 
 ## Make it yours
 
-Every spot that needs your content says **PLACEHOLDER** and describes what goes there. You can edit the files yourself, or open the repo in an AI coding tool and tell it what to put in each spot.
+Update the content in the owning data file or view component. Keep prototype concepts clearly labeled, and only add project results, credentials, testimonials, and public contact details that you can verify.
 
 | What | Where |
 |---|---|
 | Name, handle, photo, email, socials, Home headline, phone stats and their icons | `src/data/profile.ts` (start here) |
 | Phone headline size (holds your headline on one line) | `--headline-em` in `src/styles/mobile-pass.css` - the comment there shows how to measure it |
 | Your photo | `public/avatar.svg` (or point `avatarSrc` at a `.webp`/`.png`) |
-| Page headlines and copy | the top of each page component: `ProjectsGrid`, `ServicesGrid`, `ShowcaseGrid`, `TestimonialsGrid`, `AboutGrid`, `ContactGrid` in `src/components/` |
+| Project examples and prototype labels | `src/components/ProjectsGrid.tsx` |
+| Page headlines and copy | `ServicesGrid`, `ShowcaseGrid`, `TestimonialsGrid`, `AboutGrid`, `ContactGrid` in `src/components/` |
 | Funnel pages and websites (the 3D carousel) | `src/data/funnels.ts` + HTML files in `public/funnels/` and `public/samples/` |
-| Projects, apps, side builds | `src/data/projects.ts`, `src/data/ai-stack.ts` |
+| App projects (currently none published) | `src/data/projects.ts` |
+| Tools and developing capabilities | `src/data/ai-stack.ts`, `src/components/ToolsMarquee.tsx` |
 | FAQs | `src/data/faqs.ts` |
 | Tools marquee | `src/components/ToolsMarquee.tsx` (logos in `public/icons/`) |
-| Testimonial videos | `public/testimonials/`, then set `src` in `TestimonialsGrid.tsx` |
-| Contact form | `src/lib/contact.ts` (opens the visitor's email app by default; set `VITE_CONTACT_ENDPOINT` to post to your own backend) |
+| Selected work results (no testimonials published) | `src/components/TestimonialsGrid.tsx` |
+| Contact form | `src/lib/contact.ts` (configure a real profile email for the mail-app handoff or set `VITE_CONTACT_ENDPOINT` for a real backend) |
 | SEO, share image, favicon | `index.html`, `public/favicon.svg` |
 | Colors | `src/styles/tokens.css` |
 | Privacy / Terms | `src/components/Privacy.tsx`, `src/components/ToS.tsx` |

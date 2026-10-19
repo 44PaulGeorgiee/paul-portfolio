@@ -79,13 +79,12 @@
   flex: 0 0 auto;
 }
 .agrid__cap {
-  /* One tile size drives the stack and the column reserved for it. The
-     column is sized for the widest stack (five marks) so every label starts
-     on the same x whether its row carries three logos or five. */
+  /* A single neutral glyph identifies each capability without implying a
+    vendor-specific implementation. */
   --tile: clamp(28px, 2.2vw, 36px);
   --overlap: 5px;
   display: grid;
-  grid-template-columns: calc(5 * var(--tile) - 4 * var(--overlap) + var(--overlap)) minmax(0, 1fr) auto;
+  grid-template-columns: var(--tile) minmax(0, 1fr) auto;
   align-items: center;
   gap: clamp(10px, 1vw, 16px);
   padding: clamp(7px, 1.1vh, 13px) 2px;
@@ -118,6 +117,7 @@
   height: 58%;
   object-fit: contain;
 }
+.agrid__mark svg { color: var(--orange-ink); }
 .agrid__cap:hover .agrid__mark { transform: translateY(-3px); }
 .agrid__cap:hover .agrid__mark:nth-child(2) { transition-delay: 40ms; }
 .agrid__cap:hover .agrid__mark:nth-child(3) { transition-delay: 80ms; }

@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react'
-import { MagnetStraight, Timer, Trophy, CheckCircle } from '@/components/slab'
+import { MagnetStraight, Timer, Trophy, CheckCircle, CalendarCheck, Database, FlowArrow, MagnifyingGlass, Briefcase } from '@/components/slab'
 import type { Icon } from '@/components/slab'
 import Autopilot, { TOOLS } from '@/components/Autopilot'
 
@@ -13,8 +13,7 @@ import Autopilot, { TOOLS } from '@/components/Autopilot'
  * Projects: the glass, the bento card, plated marks, orange for the index
  * and the accent.
  *
- * Every string below is a PLACEHOLDER. Replace it, or hand this file to your
- * AI assistant and tell it what to put in each spot.
+ * Service copy and its illustrative workflow are maintained in this view.
  */
 
 /* ---------- The method ---------- */
@@ -30,42 +29,31 @@ type Stage = {
 const STAGES: Stage[] = [
   {
     index: '01',
-    label: 'Step 1',
-    body: 'PLACEHOLDER - one line on what happens in this step.',
+    label: 'Understand',
+    body: 'Map the process, people, tools, and handoffs.',
     Icon: MagnetStraight,
-    chips: ['Tag 1', 'Tag 2', 'Tag 3', 'Tag 4'],
+    chips: ['Current process', 'Constraints', 'Pain points'],
   },
   {
     index: '02',
-    label: 'Step 2',
-    body: 'PLACEHOLDER - one line on what happens in this step.',
+    label: 'Improve',
+    body: 'Choose practical changes that fit the existing tools.',
     Icon: Timer,
-    chips: ['Tag 1', 'Tag 2', 'Tag 3'],
+    chips: ['Workflow', 'Data', 'Access'],
   },
   {
     index: '03',
-    label: 'Step 3',
-    body: 'PLACEHOLDER - one line on the result the client gets.',
+    label: 'Evaluate',
+    body: 'Review the result and identify what still needs attention.',
     Icon: Trophy,
-    chips: ['Tag 1', 'Tag 2', 'Tag 3'],
+    chips: ['Reliability', 'Follow-up', 'Measurement'],
   },
 ]
 
 /* ---------- The services ---------- */
 
 // Example tool marks from /public/icons. Swap for the tools you actually use.
-const GHL = '/icons/gohighlevel.png'
-const REACT = '/icons/ai/react.svg'
-const TAILWIND = '/icons/ai/tailwindcss.svg'
-const VITE = '/icons/ai/vite.svg'
-const CLOUDFLARE = '/icons/ai/cloudflare.svg'
-const N8N = '/icons/ai/n8n.svg'
-const OPENAI = '/icons/openai.svg'
 const GWS = '/icons/googleworkspace.svg'
-const SLACK = '/icons/slack.svg'
-const CLAUDE_CODE = '/icons/claude-code-logo.png'
-const EXPO = '/icons/ai/expo.svg'
-const CHROME = '/icons/ai/googlechrome.svg'
 
 type Service = {
   index: string
@@ -74,59 +62,70 @@ type Service = {
   chip: string
   logos: string[]
   bullets: string[]
+  Icon: typeof FlowArrow
 }
-
-const BULLETS = ['PLACEHOLDER benefit 1', 'PLACEHOLDER benefit 2', 'PLACEHOLDER benefit 3']
-const SERVICE_DESC = 'PLACEHOLDER - one line on this service.'
 
 const SERVICES: Service[] = [
   {
     index: '01',
-    title: 'Service One',
-    description: SERVICE_DESC,
-    chip: 'PLACEHOLDER',
-    logos: [GHL, REACT, TAILWIND],
-    bullets: BULLETS,
+    title: 'Workflow Automation',
+    description: 'Automate repetitive administrative tasks, notifications, follow-ups, and routine handoffs.',
+    chip: 'Operations',
+    logos: [],
+    bullets: ['Reduce repeated data entry', 'Keep routine follow-ups moving', 'Make handoffs more consistent'],
+    Icon: FlowArrow,
   },
   {
     index: '02',
-    title: 'Service Two',
-    description: SERVICE_DESC,
-    chip: 'PLACEHOLDER',
-    logos: [GHL, N8N, OPENAI],
-    bullets: BULLETS,
+    title: 'Data and Reporting',
+    description: 'Build spreadsheet-based tools, operational dashboards, and reports that make performance easier to monitor.',
+    chip: 'Visibility',
+    logos: [GWS],
+    bullets: ['Organize operational data', 'Make recurring reports easier', 'Track useful indicators'],
+    Icon: Database,
   },
   {
     index: '03',
-    title: 'Service Three',
-    description: SERVICE_DESC,
-    chip: 'PLACEHOLDER',
-    logos: [GHL, GWS, SLACK],
-    bullets: BULLETS,
+    title: 'Lead and Appointment Follow-Up',
+    description: 'Design workflows for lead tracking, timely follow-ups, appointment requests, and status updates.',
+    chip: 'Follow-through',
+    logos: [],
+    bullets: ['Keep request statuses visible', 'Schedule timely reminders', 'Reduce missed handoffs'],
+    Icon: CalendarCheck,
   },
   {
     index: '04',
-    title: 'Service Four',
-    description: SERVICE_DESC,
-    chip: 'PLACEHOLDER',
-    logos: [REACT, VITE, CLOUDFLARE],
-    bullets: BULLETS,
+    title: 'Process Audits',
+    description: 'Map existing workflows, identify repetitive steps and bottlenecks, and recommend where automation could help.',
+    chip: 'Discovery',
+    logos: [],
+    bullets: ['Document the current workflow', 'Surface delays and duplication', 'Prioritize practical improvements'],
+    Icon: MagnifyingGlass,
   },
   {
     index: '05',
-    title: 'Service Five',
-    description: SERVICE_DESC,
-    chip: 'PLACEHOLDER',
-    logos: [CLAUDE_CODE, EXPO, CHROME],
-    bullets: BULLETS,
+    title: 'Privacy-Aware Workflow Planning',
+    description: 'For healthcare workflows, define data access, security, privacy, and compliance needs before implementation.',
+    chip: 'Healthcare',
+    logos: [],
+    bullets: ['Confirm information sensitivity', 'Plan access and permissions', 'Validate applicable requirements'],
+    Icon: Briefcase,
   },
 ]
 
 /** The tool marks, stacked horizontally on white tiles (same as Projects). */
-function Marks({ logos }: { logos: string[] }) {
+function Marks({ service }: { service: Service }) {
+  const ServiceIcon = service.Icon
+  if (!service.logos.length) {
+    return (
+      <span className="bento__icon">
+        <ServiceIcon size={22} />
+      </span>
+    )
+  }
   return (
     <span className="bento__logos" aria-hidden="true">
-      {logos.map((src) => (
+      {service.logos.map((src) => (
         <span key={src} className="bento__logo">
           <img src={src} alt="" width={22} height={22} decoding="async" />
         </span>
@@ -143,10 +142,10 @@ export default function ServicesGrid() {
       <header className="pgrid__head">
         <span className="pgrid__eyebrow">Services</span>
         <h1 className="pgrid__title" id="services-title">
-          Your services headline, in one short line.
+          Automation built around your business.
         </h1>
         <p className="pgrid__lede">
-          PLACEHOLDER - tell me what to put here: one line on what you offer.
+          I help teams identify repetitive tasks, connect disconnected tools, and create workflows that make day-to-day operations more efficient.
         </p>
       </header>
 
@@ -157,12 +156,12 @@ export default function ServicesGrid() {
           <div className="sgrid__method-copy">
             <span className="sgrid__method-eyebrow">Your Method</span>
             <h2 className="sgrid__method-title" id="method-title">
-              One. Two. Three.
+              Understand. Improve. Evaluate.
               <br />
-              <span>Your method, in three steps.</span>
+              <span>Start with the process.</span>
             </h2>
             <p className="sgrid__method-sub">
-              PLACEHOLDER - one sentence on why your method works.
+              A clear view of the work helps keep solutions practical and measurable.
             </p>
           </div>
 
@@ -191,15 +190,15 @@ export default function ServicesGrid() {
         {/* Five cards, each carrying the marks of what it is built with. */}
         <div className="sgrid__offers">
           <div className="sgrid__offers-head">
-            <h2 className="sgrid__offers-title">Your services, listed.</h2>
-            <p className="sgrid__offers-sub">PLACEHOLDER - one short nudge.</p>
+              <h2 className="sgrid__offers-title">Ways I can help</h2>
+            <p className="sgrid__offers-sub">Scoped around your current process and tools.</p>
           </div>
           <ul className="bento sgrid__services" role="list">
             {SERVICES.map((s) => (
               <li key={s.title} className="bento__card sgrid__service">
                 <span className="bento__head">
                   <span className="sgrid__service-top">
-                    <Marks logos={s.logos} />
+                    <Marks service={s} />
                     <span className="sgrid__service-index" aria-hidden="true">{s.index} / 05</span>
                   </span>
                   <span className="bento__title">{s.title}</span>
@@ -224,10 +223,10 @@ export default function ServicesGrid() {
         <div className="sgrid__flow">
           <header className="sgrid__flow-head">
             <div className="sgrid__flow-copy">
-              <span className="sgrid__flow-eyebrow">Live automation</span>
-              <h2 className="sgrid__flow-title">Your automation headline.</h2>
+              <span className="sgrid__flow-eyebrow">Prototype workflow</span>
+              <h2 className="sgrid__flow-title">Appointment request follow-up.</h2>
               <p className="sgrid__flow-sub">
-                PLACEHOLDER - tell me what to put here: one sentence on what this example automation does for a client.
+                Illustrative appointment follow-up concept only; it is not connected to a live system or patient data.
               </p>
             </div>
             <ul className="sgrid__flow-tools" role="list" aria-label="Tools that power this flow">

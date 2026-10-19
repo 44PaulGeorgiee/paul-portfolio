@@ -1,18 +1,17 @@
-import { Fragment, useCallback, useEffect, useRef, useState, type ComponentType, type ReactNode } from 'react'
+import { useCallback, useEffect, useRef, useState, type ComponentType, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
-import { ArrowUpRight, X, Ticket, Robot, FlowArrow, CursorClick } from '@/components/slab'
-import { FlowIcon, PlanIcon, GlobeIcon, SparkIcon, DeviceIcon } from './ProjectIcons'
-import { AutomationsPanel, PlanPanel, TicketingPanel, FrameworkPanel, WorkflowPanel, BarrelPanel, AIWindow, AppsWindow } from './ProjectPanels'
-import { gymFunnel, bookingFunnel, websiteFunnel, type Funnel } from '@/data/funnels'
-import { mobileApps } from '@/data/projects'
+import { ArrowUpRight, X, FlowArrow, Database, CursorClick } from '@/components/slab'
+import { GlobeIcon, SparkIcon } from './ProjectIcons'
+import { BarrelPanel, AIWindow } from './ProjectPanels'
+import { websiteFunnel, type Funnel } from '@/data/funnels'
 import { aiStack, type StackNode } from '@/data/ai-stack'
 import { useIsPhone } from '@/hooks/useMediaQuery'
 
 /**
- * Projects, as one viewport in Home's bento language: a glass panel of six
- * cards, each previewing its own body of work with a live inner track, each
- * opening the work itself in a near-fullscreen dialog (see ProjectPanels for
- * the first three; the rest are the sections the long page used to stack).
+ * Projects, as one viewport in Home's bento language: two described work
+ * examples, one prototype concept, generic page-template previews, and a
+ * grouped tools view. Cards open accessible detail dialogs or the existing
+ * template carousel.
  *
  * The dialog is a portal at z 8000, under the funnel preview (9000) so the
  * barrel's own "open this page" dialog can still stack on top of it.
@@ -35,83 +34,97 @@ type Project = {
   cat: Cat
 }
 
-type Cat = 'work' | 'sites' | 'apps' | 'ai'
+type Cat = 'work' | 'sites' | 'prototype' | 'tools'
 const FILTERS: { key: Cat | 'all'; label: string }[] = [
   { key: 'all', label: 'All' },
-  { key: 'work', label: 'Work' },
-  { key: 'sites', label: 'Sites' },
-  { key: 'apps', label: 'Apps' },
-  { key: 'ai', label: 'AI' },
+  { key: 'work', label: 'Work examples' },
+  { key: 'sites', label: 'Templates' },
+  { key: 'prototype', label: 'Prototype' },
+  { key: 'tools', label: 'Tools' },
 ]
 
-/** Example tool marks, from public/icons. Swap for what you build with. */
-const GHL = '/icons/gohighlevel.png'
-const CLAUDE_CODE = '/icons/claude-code-logo.png'
-const CODEX = '/icons/ai/codex.svg'
-const HERMES = '/icons/ai/hermes.svg'
-const PLAY = '/icons/ai/googleplay.svg'
-const CHROME = '/icons/ai/googlechrome.svg'
-const EXPO = '/icons/ai/expo.svg'
-
-const WF_SHOTS = ['project-1.jpg', 'project-2.jpg', 'project-3.jpg', 'project-4.jpg'].map(
-  (f) => `/placeholders/${f}`,
-)
-
-const FUNNEL_SHOTS = [gymFunnel[0], bookingFunnel[0], websiteFunnel[0]].filter(Boolean)
+const FUNNEL_SHOTS = websiteFunnel
 const thumbSrc = (f: Funnel) => `/${f.dir ?? 'funnels'}/thumbs/${f.file.replace('.html', '.jpeg')}`
-
-const APP_SHOTS = [
-  ...mobileApps.map((a) => a.imageSrc).filter((s): s is string => !!s),
-  '/placeholders/extension-1.jpg',
-  '/placeholders/extension-2.jpg',
-]
-
-const BUILD_DESC = 'PLACEHOLDER - tell me what to put here: two lines on what this project is and the result it got.'
-
-/** The three featured builds: each its own card in the stack, each its own
- *  pop-up. */
-const BUILDS: Project[] = [
-  { id: 'ticketing', cat: 'work', index: '03', kicker: 'Placeholder category', title: 'Featured Project One', desc: BUILD_DESC, Icon: () => <Ticket size={20} weight="duotone" />, logos: [GHL], eyebrow: 'Featured build', Section: TicketingPanel, Preview: () => null },
-  { id: 'framework', cat: 'ai', index: '04', kicker: 'Placeholder category', title: 'Featured Project Two', desc: BUILD_DESC, Icon: () => <Robot size={20} weight="duotone" />, logos: [CLAUDE_CODE], eyebrow: 'Featured build', Section: FrameworkPanel, Preview: () => null },
-  { id: 'workflow', cat: 'ai', index: '05', kicker: 'Placeholder category', title: 'Featured Project Three', desc: BUILD_DESC, Icon: () => <FlowArrow size={20} weight="duotone" />, logos: [CLAUDE_CODE, CODEX, HERMES], eyebrow: 'Featured build', Section: WorkflowPanel, Preview: () => null },
-]
 
 const leaves = (n: StackNode): StackNode[] => (n.children?.length ? n.children.flatMap(leaves) : [n])
 const AI_LEAVES = leaves(aiStack)
 
-/* ---------- Previews ---------- */
-
-function WorkflowsPreview() {
+function ProcessPreview({ steps }: { steps: string[] }) {
   return (
-    <div className="bento__media bento__reel" aria-hidden="true">
-      <div className="bento__reel-track">
-        {[...WF_SHOTS, ...WF_SHOTS].map((src, i) => (
-          <span key={i} className="bento__shot">
-            <img src={src} alt="" loading="lazy" decoding="async" />
-          </span>
-        ))}
+    <div className="bento__media bento__doc" aria-hidden="true">
+      <span className="bento__doc-eyebrow">Process outline</span>
+      <span className="bento__doc-title">Illustrative workflow</span>
+      <span className="bento__doc-flow">
+        {steps.map((step, i) => <i key={step} className={i === steps.length - 1 ? 'is-on' : undefined}>{step}</i>)}
+      </span>
+    </div>
+  )
+}
+
+function ProjectDetail({
+  status,
+  title,
+  description,
+  tools,
+  note,
+}: {
+  status: string
+  title: string
+  description: string
+  tools: string[]
+  note: string
+}) {
+  return (
+    <div className="ppanel ppanel--window">
+      <div className="ppanel__bar">
+        <span className="ppanel__dots" aria-hidden="true"><i /><i /><i /></span>
+        <span className="ppanel__url"><span className="ppanel__url-host">Portfolio work example</span></span>
+      </div>
+      <div className="ppanel__scroll">
+        <article className="pdetail">
+          <span className="pdetail__status">{status}</span>
+          <h2 className="pdetail__title">{title}</h2>
+          <p className="pdetail__description">{description}</p>
+          <h3 className="pdetail__label">Tools described</h3>
+          <ul className="pdetail__tools" role="list">
+            {tools.map((tool) => <li key={tool}>{tool}</li>)}
+          </ul>
+          <p className="pdetail__note">{note}</p>
+        </article>
       </div>
     </div>
   )
 }
 
-/** A paper mock of the plan document, the way SamplePlan previews it. */
-function PlanPreview() {
-  return (
-    <div className="bento__media bento__doc" aria-hidden="true">
-      <span className="bento__doc-eyebrow">Placeholder document</span>
-      <span className="bento__doc-title">Your document title here.</span>
-      <span className="bento__doc-flow">
-        <i>Step</i>
-        <i>Step</i>
-        <i>Step?</i>
-        <i className="is-on">Result</i>
-      </span>
-      <span className="bento__doc-line" />
-      <span className="bento__doc-line bento__doc-line--short" />
-    </div>
-  )
-}
+const QAFeedbackPanel = () => (
+  <ProjectDetail
+    status="Work example · based on experience provided"
+    title="QA Feedback Automation"
+    description="Automated the process of delivering quality assurance feedback using Power Automate, helping reduce repetitive manual work."
+    tools={['Power Automate', 'Outlook', 'Workflow automation']}
+    note="No time-saving figure or client-specific details are published because they are not documented here."
+  />
+)
+
+const QACallOutPanel = () => (
+  <ProjectDetail
+    status="Work example · based on experience provided"
+    title="QA Call-Out Card Automation"
+    description="Used Excel and VBA to streamline the creation and delivery of call-out communications through Outlook."
+    tools={['Excel', 'VBA', 'Outlook']}
+    note="No time-saving figure or client-specific details are published because they are not documented here."
+  />
+)
+
+const IntegrationConceptPanel = () => (
+  <ProjectDetail
+    status="Prototype concept · not a completed integration"
+    title="API and Data Integration"
+    description="A proposed demonstration of forms, spreadsheets, APIs, JSON data, and automated processing moving information between systems."
+    tools={['Google Sheets', 'Google Apps Script', 'HTTP APIs', 'JSON']}
+    note="This repository does not contain a working implementation of this integration."
+  />
+)
 
 /** The three builds as Open Builds rows: plate, eyebrow, title, arrow. */
 function FunnelsPreview() {
@@ -147,26 +160,16 @@ function AIPreview() {
   )
 }
 
-function AppsPreview() {
-  return (
-    <div className="bento__media bento__reel bento__reel--row" aria-hidden="true">
-      <div className="bento__reel-track">
-        {[...APP_SHOTS, ...APP_SHOTS].map((src, i) => (
-          <span key={i} className="bento__shot bento__shot--app">
-            <img src={src} alt="" loading="lazy" decoding="async" />
-          </span>
-        ))}
-      </div>
-    </div>
-  )
-}
+const FeedbackPreview = () => <ProcessPreview steps={['QA check', 'Feedback', 'Outlook']} />
+const CallOutPreview = () => <ProcessPreview steps={['Excel', 'VBA', 'Outlook']} />
+const IntegrationPreview = () => <ProcessPreview steps={['Form', 'API + JSON', 'Review']} />
 
 const PROJECTS: Project[] = [
-  { id: 'workflows', cat: 'work', index: '01', title: 'Project Title', desc: 'PLACEHOLDER - tell me what to put here: what these screens show.', Icon: FlowIcon, logos: [GHL], eyebrow: 'Screenshots', Section: AutomationsPanel, span: 2, Preview: WorkflowsPreview },
-  { id: 'plan', cat: 'work', index: '02', title: 'Sample Document', desc: 'PLACEHOLDER - tell me what to put here: the document this opens.', Icon: PlanIcon, logos: [GHL], eyebrow: 'Sample document', Section: PlanPanel, Preview: PlanPreview },
-  { id: 'funnels', cat: 'sites', index: '06', title: 'Pages and sites', desc: 'PLACEHOLDER - the pages in this reel. Spin the reel.', Icon: GlobeIcon, logos: [GHL], eyebrow: 'Pages and sites', Section: BarrelPanel, Preview: FunnelsPreview },
-  { id: 'ai', cat: 'ai', index: '07', title: 'Your systems title here', desc: 'PLACEHOLDER - tell me what to put here: the systems you run.', Icon: SparkIcon, logos: [CLAUDE_CODE, CODEX, HERMES], eyebrow: 'Your systems', Section: AIWindow, Preview: AIPreview },
-  { id: 'apps', cat: 'apps', index: '08', title: 'Apps and tools', desc: 'PLACEHOLDER - tell me what to put here: the apps and tools you ship.', Icon: DeviceIcon, logos: [PLAY, EXPO, CHROME], eyebrow: 'Your apps', Section: AppsWindow, span: 2, Preview: AppsPreview },
+  { id: 'qa-feedback', cat: 'work', index: '01', title: 'QA Feedback Automation', desc: 'Power Automate and Outlook streamline the delivery of QA feedback.', Icon: () => <FlowArrow size={20} weight="duotone" />, eyebrow: 'Work example', Section: QAFeedbackPanel, span: 2, Preview: FeedbackPreview },
+  { id: 'qa-callout', cat: 'work', index: '02', title: 'QA Call-Out Card Automation', desc: 'Excel and VBA streamline call-out communications through Outlook.', Icon: () => <Database size={20} weight="duotone" />, eyebrow: 'Work example', Section: QACallOutPanel, Preview: CallOutPreview },
+  { id: 'integration-concept', cat: 'prototype', index: '03', kicker: 'Prototype concept', title: 'API and Data Integration', desc: 'A proposed flow connecting forms, spreadsheets, APIs, and JSON; no completed build is claimed.', Icon: () => <Database size={20} weight="duotone" />, eyebrow: 'Prototype concept', Section: IntegrationConceptPanel, Preview: IntegrationPreview },
+  { id: 'templates', cat: 'sites', index: '04', title: 'Website Template Previews', desc: 'Generated page layouts for exploring structure. These are not client sites or workflow demos.', Icon: GlobeIcon, eyebrow: 'Template gallery', Section: BarrelPanel, Preview: FunnelsPreview },
+  { id: 'tools', cat: 'tools', index: '05', title: 'Tools and Developing Capabilities', desc: 'Current operations tools alongside areas still being explored; not a list of delivered AI systems.', Icon: SparkIcon, eyebrow: 'Tools and capabilities', Section: AIWindow, Preview: AIPreview },
 ]
 
 /** The icon tile, or the real marks stacked horizontally in its place. */
@@ -235,7 +238,6 @@ export default function ProjectsGrid() {
   const [cat, setCat] = useState<Cat | 'all'>('all')
   const keep = (p: Project) => !phone || cat === 'all' || p.cat === cat
   const projects = PROJECTS.filter(keep)
-  const builds = BUILDS.filter(keep)
   const triggerRef = useRef<HTMLElement | null>(null)
 
   const show = useCallback((p: Project, el: HTMLElement) => {
@@ -247,62 +249,14 @@ export default function ProjectsGrid() {
     requestAnimationFrame(() => triggerRef.current?.focus())
   }, [])
 
-  const stack = builds.length > 0 ? (
-    <div className="bento__stack">
-
-        {builds.map((b) => (
-
-          <button
-
-            key={b.id}
-
-            type="button"
-
-            className="bento__card bento__card--btn bento__card--build"
-
-            onClick={(e) => show(b, e.currentTarget)}
-
-            aria-haspopup="dialog"
-
-          >
-
-            <span className="bento__build-plate">
-
-              {b.logos?.length ? <img src={b.logos[0]} alt="" width={22} height={22} /> : <b.Icon />}
-
-            </span>
-
-            <span className="bento__build-text">
-
-              <span className="bento__kicker">{b.kicker}</span>
-
-              <span className="bento__build-title">{b.title}</span>
-
-              <span className="bento__build-desc">{b.desc}</span>
-
-            </span>
-
-            <span className="bento__build-arrow">
-
-              <ArrowUpRight size={13} weight="bold" aria-hidden="true" />
-
-            </span>
-
-          </button>
-
-        ))}
-
-      </div>
-  ) : null
-
   return (
     <section className="pgrid" aria-labelledby="projects-title">
       <header className="pgrid__head">
         <span className="pgrid__eyebrow">Projects</span>
         <h1 className="pgrid__title" id="projects-title">
-          Your projects headline goes right here.
+          Real workflows. Less manual work.
         </h1>
-        <p className="pgrid__lede">PLACEHOLDER - tell me what to put here: one line on the work below. Open a card to see it full size.</p>
+        <p className="pgrid__lede">Practical automation projects built around everyday operational problems.</p>
       </header>
 
       {phone && (
@@ -326,12 +280,12 @@ export default function ProjectsGrid() {
             not a seventh card. aria-hidden: the lede already says it. */}
         <span className="pgrid__hint" aria-hidden="true">
           <CursorClick size={14} weight="duotone" />
-          Click a card to open it
+          Open a card for details
         </span>
         <div className="bento bento--projects">
           {projects.map((p) => (
-            <Fragment key={p.id}>
             <button
+              key={p.id}
               type="button"
               className={`bento__card bento__card--btn${p.span === 2 ? ' bento__card--wide' : ''}`}
               data-id={p.id}
@@ -340,16 +294,14 @@ export default function ProjectsGrid() {
             >
               <span className="bento__head">
                 <Marks p={p} />
+                {p.kicker && <span className="bento__label">{p.kicker}</span>}
                 <span className="bento__title">{p.title}</span>
                 <span className="bento__desc">{p.desc}</span>
                 <ArrowUpRight size={15} weight="bold" aria-hidden="true" className="bento__arrow" />
               </span>
               <p.Preview />
             </button>
-            {p.id === 'plan' && stack}
-            </Fragment>
           ))}
-          {!projects.some((p) => p.id === 'plan') && stack}
         </div>
       </div>
 

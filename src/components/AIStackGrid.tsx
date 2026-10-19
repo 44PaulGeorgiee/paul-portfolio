@@ -11,47 +11,6 @@ import { aiStack, type StackNode } from '@/data/ai-stack'
  * logo mapping lives here, and only marks that exist in public/icons.
  */
 
-type Tool = { name: string; src: string }
-
-const T = {
-  claude: { name: 'Claude', src: '/icons/ai/claude-color.svg' },
-  claudeCode: { name: 'Claude Code', src: '/icons/claude-code-logo.png' },
-  openai: { name: 'OpenAI Whisper', src: '/icons/openai.svg' },
-  elevenlabs: { name: 'ElevenLabs', src: '/icons/ai/elevenlabs.svg' },
-  node: { name: 'Node.js', src: '/icons/ai/nodedotjs.svg' },
-  telegram: { name: 'Telegram', src: '/icons/ai/telegram.svg' },
-  slack: { name: 'Slack', src: '/icons/slack.svg' },
-  postgres: { name: 'Postgres + pgvector', src: '/icons/ai/postgresql.svg' },
-  sqlite: { name: 'SQLite FTS5', src: '/icons/ai/sqlite.svg' },
-  nous: { name: 'Nous Hermes', src: '/icons/ai/hermes.svg' },
-  docker: { name: 'Docker', src: '/icons/ai/docker.svg' },
-  ghl: { name: 'GoHighLevel', src: '/icons/gohighlevel.png' },
-} satisfies Record<string, Tool>
-
-/** What each system runs on. Keyed by the node id in ai-stack.ts. These are
- *  example marks - swap them for what each of your systems is built on. */
-const TOOLS: Record<string, Tool[]> = {
-  'project-a': [T.claude],
-  'project-b': [T.claude, T.claudeCode],
-  'project-c': [T.node, T.elevenlabs, T.openai, T.telegram],
-  'project-d': [T.claude, T.claudeCode],
-  'project-e': [T.claude, T.postgres, T.slack],
-  'project-f': [T.claude, T.sqlite],
-  'project-g': [T.claude, T.ghl],
-  'project-h': [T.claude, T.elevenlabs],
-  'project-i': [T.claude],
-  'project-j': [T.nous, T.telegram, T.docker],
-  'project-k': [T.nous, T.telegram],
-}
-
-/** The harnesses everything above is built with. */
-const HARNESS: Tool[] = [
-  { name: 'Claude Code', src: '/icons/claude-code-logo.png' },
-  { name: 'Codex', src: '/icons/ai/codex.svg' },
-  { name: 'Cursor', src: '/icons/ai/cursor.svg' },
-  { name: 'Hermes', src: '/icons/ai/hermes.svg' },
-]
-
 type Group = { title: string; what: string; systems: StackNode[] }
 
 /** Flatten the tree into groups: a branch with children is a group, a leaf
@@ -65,10 +24,10 @@ function groups(root: StackNode): Group[] {
 }
 
 function Card({ n }: { n: StackNode }) {
-  const tools = TOOLS[n.id] ?? []
+  const tools = n.logos ?? []
   return (
     <li className="aig__card">
-      <div className="aig__marks" aria-label={`Built with ${tools.map((t) => t.name).join(', ')}`}>
+      <div className="aig__marks" aria-label={tools.length ? `Uses ${tools.map((t) => t.name).join(', ')}` : `${n.status} capability`}>
         {tools.map((t) => (
           <span key={t.name} className="aig__mark" title={t.name}>
             <img src={t.src} alt="" width={22} height={22} loading="lazy" decoding="async" />
@@ -102,17 +61,13 @@ export default function AIStackGrid() {
     <div className="aig">
       <header className="aig__head">
         <div className="aig__head-text">
-          <span className="aig__eyebrow">Placeholder category</span>
+          <span className="aig__eyebrow">Current tools and growth areas</span>
           <h3 className="aig__title">{aiStack.what}</h3>
         </div>
         <div className="aig__harness" aria-label="Built with">
-          <span className="aig__harness-label">Built with</span>
-          {HARNESS.map((t) => (
-            <span key={t.name} className="aig__harness-item">
-              <img src={t.src} alt="" width={20} height={20} />
-              {t.name}
-            </span>
-          ))}
+          <span className="aig__harness-label">Status</span>
+          <span className="aig__harness-item"><span className="aig__status" data-status="Internal">Internal</span> Currently used</span>
+          <span className="aig__harness-item"><span className="aig__status" data-status="Beta">Beta</span> In development</span>
         </div>
       </header>
 

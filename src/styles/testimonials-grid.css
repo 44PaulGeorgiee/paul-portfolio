@@ -10,7 +10,7 @@
   .tgrid__glass {
     height: 100%;
     display: grid;
-    grid-template-columns: minmax(300px, 0.8fr) minmax(0, 1.5fr);
+    grid-template-columns: minmax(0, 1fr);
     /* minmax(0, 1fr), not the implicit auto row: an auto row is sized by its
        tallest item, so a tall clip's intrinsic height would grow the whole
        sheet and shift the ledger every time you switch clips. */
@@ -263,7 +263,7 @@
 }
 @media (min-width: 1100px) {
   .tgrid__clients {
-    grid-template-rows: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
     flex: 1 1 auto;
   }
 }
