@@ -46,10 +46,6 @@ export type Profile = {
 export const profile: Profile = {
   name: 'Paul John Rosellosa',
   firstName: 'Paul',
-<<<<<<< HEAD
-  handle: '@pauljohn',
-  role: 'Healthcare Operations & AI Automation Specialist',
-=======
   handle: '@yourhandle',
   role: 'PLACEHOLDER - your title',
 >>>>>>> 86526bacd6fddbb431edf96829103b576d7e046b
