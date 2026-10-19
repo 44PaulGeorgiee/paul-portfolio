@@ -48,7 +48,6 @@ export const profile: Profile = {
   firstName: 'Paul',
   handle: '@yourhandle',
   role: 'PLACEHOLDER - your title',
->>>>>>> 86526bacd6fddbb431edf96829103b576d7e046b
   avatarSrc: '/avatar.svg',
   verifiedLabel: '',
   email: '',
