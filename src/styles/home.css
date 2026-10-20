@@ -30,18 +30,13 @@
 .home__headline {
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
-  gap: clamp(20px, 4vw, 56px);
 }
 
-/* One line, never two. The size is bounded by what fits beside the CTA in the
-   panel at the 1100px breakpoint, not by what looks biggest at 1440. Below the
-   breakpoint the headline gets the full width and is allowed to wrap - a
-   29-character sentence cannot be one legible line on a 390px phone. */
+/* The full primary headline wraps naturally at desktop and phone widths. */
 .home__title {
   display: flex;
   flex-direction: column;
-  font-size: clamp(30px, 3.5vw, 72px);
+  font-size: clamp(30px, 3vw, 54px);
   font-weight: 700;
   letter-spacing: var(--ls-display);
   line-height: 1.06;
@@ -50,37 +45,47 @@
 .home__line { display: block; }
 
 @media (min-width: 1100px) {
-  .home__line { white-space: nowrap; }
+  .home__line { white-space: normal; }
 }
 
+.home__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: clamp(12px, 1.8vh, 22px);
+}
 .home__cta {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  flex-shrink: 0;
-  height: 46px;
-  padding: 0 22px;
+  min-height: 46px;
+  max-width: 100%;
+  padding: 10px 18px;
   border-radius: var(--radius-pill);
   background: var(--navy);
   color: var(--cream);
   font-size: 14px;
   font-weight: 600;
+  line-height: 1.35;
+  text-decoration: none;
   box-shadow: var(--shadow-btn);
   transition: transform var(--dur-med) var(--ease-spring),
               background var(--dur-fast) var(--ease-out);
 }
 .home__cta svg { color: var(--orange); }
 .home__cta:hover { transform: translateY(-2px); }
+.home__cta--secondary {
+  background: var(--paper);
+  color: var(--navy);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+}
+.home__cta--secondary:hover { background: var(--white); }
 
-/* One line, from 1400px up.
-   The sentence is 130 characters. Measured against the panel it needs roughly
-   0.65 x the viewport width to sit on one line, and the panel only offers that
-   from ~1400px: at 1100 it would have to drop to ~11px to fit, which is not a
-   readable lede, it is a compliance trick. So it wraps below the threshold
-   rather than shrinking into unreadability. Shorten the copy to ~80 characters
-   and this can be one line at every width. */
+/* Keep supporting copy at a readable measure beneath the long headline. */
 .home__lede {
-  margin-top: clamp(12px, 1.8vh, 22px);
+  margin-top: clamp(8px, 1vh, 14px);
   /* a reading measure, not the container: ~70 characters, balanced lines */
   max-width: 70ch;
   font-size: clamp(14px, 1.05vw, 22px);

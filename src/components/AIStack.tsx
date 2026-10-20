@@ -11,7 +11,7 @@ import { CaretDown, Circle } from '@/components/slab'
 import { aiStack, type StackNode } from '@/data/ai-stack'
 
 /**
- * AIStack - the top-down tree of systems.
+ * AIStack - the top-down tree of the verified technology stack.
  *
  * Every string on screen comes from src/data/ai-stack.ts. Nothing about the
  * content is encoded here, including how many branches there are or whether

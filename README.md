@@ -1,6 +1,6 @@
 # Portfolio Template
 
-A personal portfolio for Paul John Rosellosa, focused on healthcare operations and practical workflow automation. It has a fixed profile rail, an animated contour background, a bento home screen, a 3D template-page carousel, and a separate app-style layout for phones. Work examples use qualitative descriptions; showcase concepts and page templates are labeled as prototypes or previews.
+A personal portfolio for Paul John Rosellosa, focused on healthcare operations and AI automation. It has a fixed profile rail, an animated contour background, a bento home screen, a 3D template-page carousel, and a separate app-style layout for phones. Two internal QA workflow examples include estimated (not measured) time savings; additional workflow examples are labeled as prototypes.
 
 Stack: Vite 6, React 19, TypeScript, plain CSS custom properties, Three.js, GSAP, Lenis, React Router 7, Phosphor icons, Poppins.
 
@@ -36,7 +36,7 @@ Update the content in the owning data file or view component. Keep prototype con
 | What | Where |
 |---|---|
 | Name, handle, photo, email, socials, Home headline, phone stats and their icons | `src/data/profile.ts` (start here) |
-| Phone headline size (holds your headline on one line) | `--headline-em` in `src/styles/mobile-pass.css` - the comment there shows how to measure it |
+| Primary headline and CTAs | `src/data/profile.ts`, `src/components/Home.tsx` |
 | Your photo | `public/avatar.svg` (or point `avatarSrc` at a `.webp`/`.png`) |
 | Project examples and prototype labels | `src/components/ProjectsGrid.tsx` |
 | Page headlines and copy | `ServicesGrid`, `ShowcaseGrid`, `TestimonialsGrid`, `AboutGrid`, `ContactGrid` in `src/components/` |
@@ -46,7 +46,9 @@ Update the content in the owning data file or view component. Keep prototype con
 | FAQs | `src/data/faqs.ts` |
 | Tools marquee | `src/components/ToolsMarquee.tsx` (logos in `public/icons/`) |
 | Selected work results (no testimonials published) | `src/components/TestimonialsGrid.tsx` |
-| Contact form | `src/lib/contact.ts` (configure a real profile email for the mail-app handoff or set `VITE_CONTACT_ENDPOINT` for a real backend) |
+| Contact email and social links | `src/data/profile.ts` |
+| Calendar CTA | `src/components/Home.tsx`, `src/components/ContactGrid.tsx` |
+| Contact form | `src/lib/contact.ts` (defaults to a mail-app draft; set `VITE_CONTACT_ENDPOINT` to submit to a configured endpoint) |
 | SEO, share image, favicon | `index.html`, `public/favicon.svg` |
 | Colors | `src/styles/tokens.css` |
 | Privacy / Terms | `src/components/Privacy.tsx`, `src/components/ToS.tsx` |

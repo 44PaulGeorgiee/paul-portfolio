@@ -1,8 +1,8 @@
 import { useState, type FormEvent } from 'react'
-import { PaperPlaneTilt, CheckCircle, WarningCircle, EnvelopeSimple, ArrowUpRight, CaretDown } from '@/components/slab'
+import { PaperPlaneTilt, CheckCircle, WarningCircle, EnvelopeSimple, ArrowUpRight, CaretDown, CalendarBlank } from '@/components/slab'
 import { FAQS } from '@/data/faqs'
 import { profile } from '@/data/profile'
-import { readLead, submitLead, SubmitError, MAX_NAME, MAX_EMAIL, MAX_MESSAGE, type SubmitResult } from '@/lib/contact'
+import { readLead, submitLead, SubmitError, ENDPOINT, MAX_NAME, MAX_EMAIL, MAX_MESSAGE, type SubmitResult } from '@/lib/contact'
 
 /**
  * ContactGrid - the Contact view as a fixed viewport.
@@ -110,12 +110,21 @@ export default function ContactGrid() {
                 <span>{profile.email}</span>
               </a>
             )}
+            <a
+              className="cgrid__mail cgrid__calendar"
+              href="https://calendar.app.google/fZQJPcyKfxVgwnp1A"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <CalendarBlank size={16} weight="fill" aria-hidden="true" />
+              <span>Curious about the untapped opportunities within your operations? Let's find out.</span>
+            </a>
             {profile.socials.length > 0 && (
               <ul className="cgrid__socials" role="list">
                 {profile.socials.map((s) => (
                   <li key={s.label}>
                     <a className="cgrid__social" href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}>
-                      <img src={s.iconPath} alt="" loading="lazy" decoding="async" />
+                      <s.Icon size={18} weight="fill" aria-hidden="true" />
                     </a>
                   </li>
                 ))}
@@ -201,7 +210,11 @@ export default function ContactGrid() {
                     {status.note}
                   </span>
                 ) : (
-                  <span className="cgrid__hint">Contact delivery needs a valid address or configured endpoint.</span>
+                  <span className="cgrid__hint">
+                    {ENDPOINT
+                      ? 'The form sends your message to the configured contact endpoint.'
+                      : 'The form prepares an email draft for you to review and send.'}
+                  </span>
                 )}
               </div>
             </form>

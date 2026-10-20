@@ -30,8 +30,8 @@ const OFFERS = [
 ] as const
 
 const WORK_ITEMS = [
-  { name: 'QA Feedback Automation', work: 'Power Automate and Outlook for QA feedback delivery.' },
-  { name: 'QA Call-Out Card Automation', work: 'Excel and VBA for call-out communications.' },
+  { name: 'QA Feedback Automation', work: 'Power Automate · estimated ~10 hours saved weekly.' },
+  { name: 'QA Call Out Card', work: 'Excel, VBA, Outlook · estimated ~10 hours saved weekly.' },
 ]
 
 // Three photos of you, fanned. Small copies are fine - the fan shows them under 100px.
@@ -73,7 +73,7 @@ export default function HomeBento() {
     <nav className="bento" aria-label="Explore the portfolio">
       {/* Selected work examples in the existing compact project card. */}
       <Link to="/projects" className="bento__card bento__card--projects">
-        <CardHead Icon={FolderOpen} title="Selected work" desc="Two described QA workflow automation examples; no unverified metrics." />
+        <CardHead Icon={FolderOpen} title="Selected work" desc="Two internal QA automation workflows with estimated time savings." />
         <ul className="bento__media bento__offers" role="list" aria-hidden="true">
           {WORK_ITEMS.map((item, i) => (
             <li key={item.name} className="bento__offer" style={{ '--i': i } as React.CSSProperties}>
@@ -101,7 +101,7 @@ export default function HomeBento() {
 
       {/* Tools and developing capabilities from the grouped stack data. */}
       <Link to="/projects" className="bento__card bento__card--ai">
-        <CardHead Icon={Robot} title="Tools and capabilities" desc="Current operations tools and clearly marked areas in development." />
+        <CardHead Icon={Robot} title="Verified technology" desc="Tools across operations, analytics, development, and automation." />
         <div className="bento__media bento__chips" aria-hidden="true">
           {toolRows.map((row, r) => (
             <div key={r} className="bento__chip-row" data-dir={r ? 'right' : 'left'}>
@@ -152,7 +152,7 @@ export default function HomeBento() {
 
       {/* Work examples, not fabricated testimonials. */}
       <Link to="/testimonials" className="bento__card bento__card--quotes">
-        <CardHead Icon={FlowArrow} title="Selected results" desc="Qualitative outcomes only; no client identities or figures are published." />
+        <CardHead Icon={FlowArrow} title="Selected results" desc="Estimated time savings from two internal QA automation workflows." />
         <div className="bento__media bento__reviews" aria-hidden="true">
           <div className="bento__reviews-track">
             {[...WORK_ITEMS, ...WORK_ITEMS].map((item, i) => (

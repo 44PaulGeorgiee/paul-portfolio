@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react'
-import { MagnetStraight, Timer, Trophy, CheckCircle, CalendarCheck, Database, FlowArrow, MagnifyingGlass, Briefcase } from '@/components/slab'
+import { MagnetStraight, Timer, Trophy, CheckCircle, CalendarCheck, Database, FlowArrow } from '@/components/slab'
 import type { Icon } from '@/components/slab'
 import Autopilot, { TOOLS } from '@/components/Autopilot'
 
@@ -62,54 +62,56 @@ type Service = {
   chip: string
   logos: string[]
   bullets: string[]
+  proof?: string
   Icon: typeof FlowArrow
 }
 
 const SERVICES: Service[] = [
   {
     index: '01',
-    title: 'Workflow Automation',
-    description: 'Automate repetitive administrative tasks, notifications, follow-ups, and routine handoffs.',
-    chip: 'Operations',
+    title: 'Business Workflow Automation',
+    description: 'Assess and improve repeatable business workflows using practical automation.',
+    chip: 'Workflow',
     logos: [],
-    bullets: ['Reduce repeated data entry', 'Keep routine follow-ups moving', 'Make handoffs more consistent'],
+    bullets: ['Workflow assessment', 'Automation design', 'Workflow implementation', 'Testing', 'Documentation'],
+    proof: 'QA Feedback Automation · QA Call Out Card',
     Icon: FlowArrow,
   },
   {
     index: '02',
-    title: 'Data and Reporting',
-    description: 'Build spreadsheet-based tools, operational dashboards, and reports that make performance easier to monitor.',
-    chip: 'Visibility',
+    title: 'API Integration and Data Synchronization',
+    description: 'Plan data exchange between applications where access, permissions, and technical fit allow.',
+    chip: 'Integration',
     logos: [GWS],
-    bullets: ['Organize operational data', 'Make recurring reports easier', 'Track useful indicators'],
+    bullets: ['API connection', 'Data mapping', 'JSON processing', 'Error handling', 'Integration testing', 'Documentation'],
     Icon: Database,
   },
   {
     index: '03',
-    title: 'Lead and Appointment Follow-Up',
-    description: 'Design workflows for lead tracking, timely follow-ups, appointment requests, and status updates.',
-    chip: 'Follow-through',
+    title: 'Lead Management and Follow-Up Automation',
+    description: 'Structure a lead workflow so capture, pipeline stages, follow-up, and reporting are easier to manage.',
+    chip: 'Lead workflow',
     logos: [],
-    bullets: ['Keep request statuses visible', 'Schedule timely reminders', 'Reduce missed handoffs'],
+    bullets: ['Lead capture', 'Pipeline configuration', 'Follow-up workflows', 'Reporting'],
     Icon: CalendarCheck,
   },
   {
     index: '04',
-    title: 'Process Audits',
-    description: 'Map existing workflows, identify repetitive steps and bottlenecks, and recommend where automation could help.',
-    chip: 'Discovery',
+    title: 'Appointment Scheduling and Follow-Up Automation',
+    description: 'Plan appointment workflows around scheduling and clear communication steps.',
+    chip: 'Appointments',
     logos: [],
-    bullets: ['Document the current workflow', 'Surface delays and duplication', 'Prioritize practical improvements'],
-    Icon: MagnifyingGlass,
+    bullets: ['Scheduling', 'Confirmations', 'Reminders', 'Rescheduling', 'Reporting'],
+    Icon: CalendarCheck,
   },
   {
     index: '05',
-    title: 'Privacy-Aware Workflow Planning',
-    description: 'For healthcare workflows, define data access, security, privacy, and compliance needs before implementation.',
-    chip: 'Healthcare',
+    title: 'Operational Reporting and Dashboard Development',
+    description: 'Prepare operational data and reporting views to support clearer review of business indicators.',
+    chip: 'Reporting',
     logos: [],
-    bullets: ['Confirm information sensitivity', 'Plan access and permissions', 'Validate applicable requirements'],
-    Icon: Briefcase,
+    bullets: ['Data cleaning', 'KPI creation', 'Dashboard creation', 'Reporting automation', 'Documentation'],
+    Icon: Database,
   },
 ]
 
@@ -213,6 +215,7 @@ export default function ServicesGrid() {
                     </li>
                   ))}
                 </ul>
+                {s.proof && <p className="sgrid__proof">Related work: {s.proof}</p>}
               </li>
             ))}
           </ul>

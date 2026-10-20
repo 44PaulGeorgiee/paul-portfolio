@@ -21,12 +21,11 @@ type Project = {
   index: string
   title: string
   desc: string
+  status?: 'LIVE' | 'INTERNAL' | 'PROTOTYPE' | 'BETA'
   Icon: ComponentType<{ size?: number }>
   eyebrow: string
   Section: ComponentType
   span?: 2
-  /** Open Builds style: a small orange kicker above the title. */
-  kicker?: string
   /** Real marks of what the work was built in; replaces the icon tile. */
   logos?: string[]
   Preview: ComponentType
@@ -64,13 +63,17 @@ function ProcessPreview({ steps }: { steps: string[] }) {
 function ProjectDetail({
   status,
   title,
+  problem,
   description,
+  outcome,
   tools,
   note,
 }: {
   status: string
   title: string
+  problem?: string
   description: string
+  outcome?: string
   tools: string[]
   note: string
 }) {
@@ -84,11 +87,24 @@ function ProjectDetail({
         <article className="pdetail">
           <span className="pdetail__status">{status}</span>
           <h2 className="pdetail__title">{title}</h2>
+          {problem && (
+            <>
+              <h3 className="pdetail__label">Problem</h3>
+              <p className="pdetail__description">{problem}</p>
+            </>
+          )}
+          <h3 className="pdetail__label">{problem ? 'Solution' : 'Description'}</h3>
           <p className="pdetail__description">{description}</p>
           <h3 className="pdetail__label">Tools described</h3>
           <ul className="pdetail__tools" role="list">
             {tools.map((tool) => <li key={tool}>{tool}</li>)}
           </ul>
+          {outcome && (
+            <>
+              <h3 className="pdetail__label">Outcome</h3>
+              <p className="pdetail__description">{outcome}</p>
+            </>
+          )}
           <p className="pdetail__note">{note}</p>
         </article>
       </div>
@@ -98,31 +114,65 @@ function ProjectDetail({
 
 const QAFeedbackPanel = () => (
   <ProjectDetail
-    status="Work example · based on experience provided"
+    status="INTERNAL"
     title="QA Feedback Automation"
-    description="Automated the process of delivering quality assurance feedback using Power Automate, helping reduce repetitive manual work."
-    tools={['Power Automate', 'Outlook', 'Workflow automation']}
-    note="No time-saving figure or client-specific details are published because they are not documented here."
+    problem="Manual QA feedback delivery required repetitive effort and time."
+    description="A Power Automate workflow streamlines the delivery of QA feedback."
+    tools={['Power Automate']}
+    outcome="ESTIMATED savings: approximately 10 hours per week. This is an estimate, not a measured result."
+    note="Details are generalized; confidential company, employee, and customer information is not included."
   />
 )
 
 const QACallOutPanel = () => (
   <ProjectDetail
-    status="Work example · based on experience provided"
-    title="QA Call-Out Card Automation"
-    description="Used Excel and VBA to streamline the creation and delivery of call-out communications through Outlook."
-    tools={['Excel', 'VBA', 'Outlook']}
-    note="No time-saving figure or client-specific details are published because they are not documented here."
+    status="INTERNAL"
+    title="QA Call Out Card"
+    problem="Preparing QA call-out communications manually required repetitive effort."
+    description="An Excel VBA workflow prepares call-out communications for Outlook."
+    tools={['Microsoft Excel', 'VBA', 'Outlook']}
+    outcome="ESTIMATED savings: approximately 10 hours per week. This is an estimate, not a measured result."
+    note="Details are generalized; confidential company, employee, and customer information is not included."
   />
 )
 
 const IntegrationConceptPanel = () => (
   <ProjectDetail
-    status="Prototype concept · not a completed integration"
-    title="API and Data Integration"
-    description="A proposed demonstration of forms, spreadsheets, APIs, JSON data, and automated processing moving information between systems."
-    tools={['Google Sheets', 'Google Apps Script', 'HTTP APIs', 'JSON']}
-    note="This repository does not contain a working implementation of this integration."
+    status="PROTOTYPE"
+    title="API Integration and Data Processing Workflow"
+    description="Demonstrates API requests, JSON parsing, validation, error handling, data transformation, and spreadsheet output."
+    tools={['Apps Script', 'REST API', 'JSON', 'Google Sheets']}
+    note="Prototype demonstration only; this is not presented as a live or production integration."
+  />
+)
+
+const AppointmentConceptPanel = () => (
+  <ProjectDetail
+    status="PROTOTYPE"
+    title="Appointment Booking and Follow-Up Automation"
+    description="A proposed workflow concept for appointment scheduling, confirmations, reminders, rescheduling, and reporting."
+    tools={['Workflow design', 'Scheduling', 'Reporting']}
+    note="Prototype concept only; it is not connected to a live booking system or patient data."
+  />
+)
+
+const LeadConceptPanel = () => (
+  <ProjectDetail
+    status="PROTOTYPE"
+    title="Lead Capture and Follow-Up Workflow"
+    description="A proposed lead process covering capture, pipeline stages, follow-up steps, and reporting."
+    tools={['Lead capture', 'Pipeline workflow', 'Follow-up']}
+    note="Prototype concept only; it is not connected to a live CRM or customer data."
+  />
+)
+
+const DashboardConceptPanel = () => (
+  <ProjectDetail
+    status="PROTOTYPE"
+    title="Business Operations and Performance Dashboard"
+    description="A proposed dashboard workflow covering data cleaning, KPI definition, reporting automation, and operational review."
+    tools={['Data processing', 'KPIs', 'Dashboard reporting']}
+    note="Prototype concept only; no client or company data is included."
   />
 )
 
@@ -165,11 +215,14 @@ const CallOutPreview = () => <ProcessPreview steps={['Excel', 'VBA', 'Outlook']}
 const IntegrationPreview = () => <ProcessPreview steps={['Form', 'API + JSON', 'Review']} />
 
 const PROJECTS: Project[] = [
-  { id: 'qa-feedback', cat: 'work', index: '01', title: 'QA Feedback Automation', desc: 'Power Automate and Outlook streamline the delivery of QA feedback.', Icon: () => <FlowArrow size={20} weight="duotone" />, eyebrow: 'Work example', Section: QAFeedbackPanel, span: 2, Preview: FeedbackPreview },
-  { id: 'qa-callout', cat: 'work', index: '02', title: 'QA Call-Out Card Automation', desc: 'Excel and VBA streamline call-out communications through Outlook.', Icon: () => <Database size={20} weight="duotone" />, eyebrow: 'Work example', Section: QACallOutPanel, Preview: CallOutPreview },
-  { id: 'integration-concept', cat: 'prototype', index: '03', kicker: 'Prototype concept', title: 'API and Data Integration', desc: 'A proposed flow connecting forms, spreadsheets, APIs, and JSON; no completed build is claimed.', Icon: () => <Database size={20} weight="duotone" />, eyebrow: 'Prototype concept', Section: IntegrationConceptPanel, Preview: IntegrationPreview },
-  { id: 'templates', cat: 'sites', index: '04', title: 'Website Template Previews', desc: 'Generated page layouts for exploring structure. These are not client sites or workflow demos.', Icon: GlobeIcon, eyebrow: 'Template gallery', Section: BarrelPanel, Preview: FunnelsPreview },
-  { id: 'tools', cat: 'tools', index: '05', title: 'Tools and Developing Capabilities', desc: 'Current operations tools alongside areas still being explored; not a list of delivered AI systems.', Icon: SparkIcon, eyebrow: 'Tools and capabilities', Section: AIWindow, Preview: AIPreview },
+  { id: 'qa-feedback', cat: 'work', index: '01', status: 'INTERNAL', title: 'QA Feedback Automation', desc: 'Power Automate workflow streamlining QA feedback delivery.', Icon: () => <FlowArrow size={20} weight="duotone" />, eyebrow: 'Internal workflow', Section: QAFeedbackPanel, Preview: FeedbackPreview },
+  { id: 'qa-callout', cat: 'work', index: '02', status: 'INTERNAL', title: 'QA Call Out Card', desc: 'Excel VBA workflow preparing Outlook call-out communications.', Icon: () => <Database size={20} weight="duotone" />, eyebrow: 'Internal workflow', Section: QACallOutPanel, Preview: CallOutPreview },
+  { id: 'integration-concept', cat: 'prototype', index: '03', status: 'PROTOTYPE', title: 'API Integration and Data Processing Workflow', desc: 'API requests, JSON parsing, validation, error handling, transformation, and sheet output.', Icon: () => <Database size={20} weight="duotone" />, eyebrow: 'Prototype', Section: IntegrationConceptPanel, Preview: IntegrationPreview },
+  { id: 'appointment-concept', cat: 'prototype', index: '04', status: 'PROTOTYPE', title: 'Appointment Booking and Follow-Up Automation', desc: 'Scheduling, confirmations, reminders, rescheduling, and reporting concept.', Icon: () => <FlowArrow size={20} weight="duotone" />, eyebrow: 'Prototype', Section: AppointmentConceptPanel, Preview: () => <ProcessPreview steps={['Schedule', 'Confirm', 'Remind', 'Report']} /> },
+  { id: 'lead-concept', cat: 'prototype', index: '05', status: 'PROTOTYPE', title: 'Lead Capture and Follow-Up Workflow', desc: 'Lead capture, pipeline configuration, follow-up, and reporting concept.', Icon: () => <FlowArrow size={20} weight="duotone" />, eyebrow: 'Prototype', Section: LeadConceptPanel, Preview: () => <ProcessPreview steps={['Capture', 'Pipeline', 'Follow up']} /> },
+  { id: 'dashboard-concept', cat: 'prototype', index: '06', status: 'PROTOTYPE', title: 'Business Operations and Performance Dashboard', desc: 'Data cleaning, KPI definition, dashboards, and reporting automation concept.', Icon: () => <Database size={20} weight="duotone" />, eyebrow: 'Prototype', Section: DashboardConceptPanel, Preview: () => <ProcessPreview steps={['Clean data', 'KPIs', 'Dashboard']} /> },
+  { id: 'templates', cat: 'sites', index: '07', title: 'Website Template Previews', desc: 'Generated page layouts for exploring structure. These are not client sites or workflow demos.', Icon: GlobeIcon, eyebrow: 'Template gallery', Section: BarrelPanel, Preview: FunnelsPreview },
+  { id: 'tools', cat: 'tools', index: '08', title: 'Verified Technology Stack', desc: 'Tools and technologies listed for operations, analytics, development, and automation.', Icon: SparkIcon, eyebrow: 'Technology stack', Section: AIWindow, Preview: AIPreview },
 ]
 
 /** The icon tile, or the real marks stacked horizontally in its place. */
@@ -257,6 +310,9 @@ export default function ProjectsGrid() {
           Real workflows. Less manual work.
         </h1>
         <p className="pgrid__lede">Practical automation projects built around everyday operational problems.</p>
+        <p className="pgrid__lede pgrid__status-guide">
+          LIVE: publicly accessible · INTERNAL: used in real workflows · PROTOTYPE: demonstration or concept · BETA: experimental
+        </p>
       </header>
 
       {phone && (
@@ -294,7 +350,7 @@ export default function ProjectsGrid() {
             >
               <span className="bento__head">
                 <Marks p={p} />
-                {p.kicker && <span className="bento__label">{p.kicker}</span>}
+                {p.status && <span className="bento__status" data-status={p.status}>{p.status}</span>}
                 <span className="bento__title">{p.title}</span>
                 <span className="bento__desc">{p.desc}</span>
                 <ArrowUpRight size={15} weight="bold" aria-hidden="true" className="bento__arrow" />

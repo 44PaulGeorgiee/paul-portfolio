@@ -40,19 +40,24 @@ type Tool = {
 }
 
 export const tools: Tool[] = [
-  { name: 'Excel', group: 'Core capabilities', mark: 'XL' },
-  { name: 'Google Sheets', group: 'Core capabilities', iconPath: '/icons/googleworkspace.svg' },
-  { name: 'SQL', group: 'Core capabilities', mark: 'SQL' },
-  { name: 'Power Automate', group: 'Core capabilities', mark: 'PA' },
-  { name: 'VBA', group: 'Core capabilities', mark: 'VBA' },
-  { name: 'Google Apps Script', group: 'Core capabilities', mark: 'GAS' },
-  { name: 'APIs', group: 'Integration and analytics', mark: 'API' },
-  { name: 'JSON', group: 'Integration and analytics', mark: '{}' },
-  { name: 'HTTP Requests', group: 'Integration and analytics', mark: 'HTTP' },
-  { name: 'Data Dashboards', group: 'Integration and analytics', mark: 'DATA' },
-  { name: 'AI Workflows', group: 'Areas of development', mark: 'AI' },
-  { name: 'Lead Automation', group: 'Areas of development', mark: 'LEAD' },
-  { name: 'System Integration', group: 'Areas of development', mark: 'SYS' },
+  { name: 'Google Sheets', group: 'Google Workspace', mark: 'Sheets' },
+  { name: 'Apps Script', group: 'Google Workspace', mark: 'Apps' },
+  { name: 'Google Forms', group: 'Google Workspace', mark: 'Forms' },
+  { name: 'Microsoft Excel', group: 'Microsoft', mark: 'Excel' },
+  { name: 'VBA', group: 'Microsoft', mark: 'VBA' },
+  { name: 'Power Automate', group: 'Microsoft', mark: 'PA' },
+  { name: 'Outlook', group: 'Microsoft', mark: 'Mail' },
+  { name: 'SQL', group: 'Analytics', mark: 'SQL' },
+  { name: 'Power BI', group: 'Analytics', mark: 'BI' },
+  { name: 'Google Sheets Reporting', group: 'Analytics', mark: 'Data' },
+  { name: 'REST APIs', group: 'Development', mark: 'API' },
+  { name: 'JSON', group: 'Development', mark: '{}' },
+  { name: 'TypeScript', group: 'Development', mark: 'TS' },
+  { name: 'React', group: 'Development', mark: 'React' },
+  { name: 'Vite', group: 'Development', mark: 'Vite' },
+  { name: 'Claude Code', group: 'AI & Automation', mark: 'Claude' },
+  { name: 'ChatGPT', group: 'AI & Automation', mark: 'GPT' },
+  { name: 'ElevenLabs', group: 'AI & Automation', mark: '11' },
 ]
 
 export default function ToolsMarquee() {

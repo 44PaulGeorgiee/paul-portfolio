@@ -59,12 +59,12 @@ export default function Rail() {
           {profile.verifiedLabel && <SealCheck size={19} weight="fill" aria-label={profile.verifiedLabel} />}
         </h2>
         <p className="rail__handle">
-          {profile.handle}
+          {profile.handle || profile.role}
         </p>
 
         <div className="rail__actions">
           <ul className="rail__socials" role="list" aria-label="Social profiles">
-          {profile.socials.map(({ label, href, iconPath }) => (
+          {profile.socials.map(({ label, href, Icon: SocialIcon }) => (
             <li key={label}>
               <a
                 className="rail__social"
@@ -73,13 +73,7 @@ export default function Rail() {
                 rel="noopener noreferrer"
                 aria-label={label}
               >
-                {/* Single-colour silhouettes, tinted by currentColor through a
-                    CSS mask - same technique as the hero's social row. */}
-                <span
-                  className="rail__social-icon"
-                  style={{ ['--icon-url' as string]: `url('${iconPath}')` }}
-                  aria-hidden="true"
-                />
+                <SocialIcon className="rail__social-icon" weight="fill" aria-hidden="true" />
               </a>
               </li>
             ))}

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowUpRight } from '@/components/slab'
+import { ArrowUpRight, CalendarBlank } from '@/components/slab'
 import { profile } from '@/data/profile'
 import ToolsMarquee from './ToolsMarquee'
 import HomeBento from './HomeBento'
@@ -39,20 +39,26 @@ export default function Home() {
       <div className="home__head">
         <div className="home__headline">
           <h1 className="home__title" id="home-title">
-            <span className="home__line">
-              {phone ? 'Less manual work.' : `${displayName.line1} ${displayName.line2}`}
-            </span>
+            <span className="home__line">{`${displayName.line1} ${displayName.line2}`}</span>
           </h1>
-
-          {!phone && (
-            <Link className="home__cta" to="/contact">
-              Get in touch
-              <ArrowUpRight size={16} weight="bold" aria-hidden="true" />
-            </Link>
-          )}
         </div>
 
         <p className="home__lede">{hero.body}</p>
+        <div className="home__actions">
+          <a
+            className="home__cta"
+            href="https://calendar.app.google/fZQJPcyKfxVgwnp1A"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Curious about the untapped opportunities within your operations? Let's find out.
+            <CalendarBlank size={16} weight="bold" aria-hidden="true" />
+          </a>
+          <Link className="home__cta home__cta--secondary" to="/projects">
+            View My Projects
+            <ArrowUpRight size={16} weight="bold" aria-hidden="true" />
+          </Link>
+        </div>
         {phone && <HomeStats />}
       </div>
 

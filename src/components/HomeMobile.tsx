@@ -24,7 +24,8 @@ export function HomeProfile() {
           {profile.verifiedLabel && <SealCheck size={16} weight="fill" className="hprofile__verified" aria-label={profile.verifiedLabel} />}
         </span>
         <span className="hprofile__handle">
-          {profile.handle} · {profile.role}
+          {profile.handle ? `${profile.handle} · ` : ''}
+          {profile.role}
         </span>
       </div>
       <QuickMenu className="hprofile__menu" />
@@ -47,7 +48,7 @@ export function HomeStats() {
 }
 
 const TILES = [
-  { n: '01', label: 'Projects', to: '/projects', title: 'Real workflows. Less manual work.', desc: 'QA feedback and call-out automation.', Icon: FlowArrow },
+  { n: '01', label: 'Projects', to: '/projects', title: 'Real workflows. Less manual work.', desc: 'Two internal QA workflow examples and four clearly labeled prototypes.', Icon: FlowArrow },
   { n: '02', label: 'Services', to: '/services', title: 'Automation built around your business.', desc: 'Practical process and reporting support.', Icon: Stack },
   { n: '03', label: 'Showcase', to: '/showcase', title: 'Workflow concepts', desc: 'Prototype examples, not client systems.', Icon: Coffee, accent: true },
   { n: '04', label: 'Selected Results', to: '/testimonials', title: 'Work that reduces manual steps.', desc: 'Two operations automation examples.', Icon: FlowArrow },

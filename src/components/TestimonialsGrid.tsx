@@ -12,15 +12,15 @@ const RESULTS: Result[] = [
   {
     index: '01',
     title: 'QA Feedback Automation',
-    description: 'Automated the process of delivering quality assurance feedback using Power Automate, helping reduce repetitive manual work.',
-    tools: ['Power Automate', 'Outlook', 'Workflow automation'],
+    description: 'A Power Automate workflow streamlines QA feedback delivery and reduces repetitive manual effort.',
+    tools: ['Power Automate', 'Estimated savings: approximately 10 hours per week'],
     Icon: FlowArrow,
   },
   {
     index: '02',
-    title: 'QA Call-Out Card Automation',
-    description: 'Used Excel and VBA to streamline the creation and delivery of call-out communications through Outlook.',
-    tools: ['Excel', 'VBA', 'Outlook'],
+    title: 'QA Call Out Card',
+    description: 'An Excel VBA workflow prepares QA call-out communications for Outlook.',
+    tools: ['Microsoft Excel', 'VBA', 'Outlook', 'Estimated savings: approximately 10 hours per week'],
     Icon: Database,
   },
 ]
@@ -34,7 +34,7 @@ export default function TestimonialsGrid() {
           Practical automation. Less repetitive work.
         </h1>
         <p className="pgrid__lede">
-          Two qualitative examples from QA operations. No time-saving figures or client identities are published.
+          Two internal QA workflow examples. Time savings are estimates, not measured results; confidential details are omitted.
         </p>
       </header>
 
@@ -42,7 +42,7 @@ export default function TestimonialsGrid() {
         <div className="tgrid__ledger">
           <div className="tgrid__ledger-head">
             <h2 className="tgrid__ledger-title">Work examples</h2>
-            <p className="tgrid__ledger-sub">Descriptions are based on work details provided; no quantified outcomes are claimed.</p>
+            <p className="tgrid__ledger-sub">Estimated savings are approximate and have not been presented as measured outcomes.</p>
           </div>
 
           <ul className="tgrid__clients" role="list">

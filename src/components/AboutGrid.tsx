@@ -33,22 +33,22 @@ export default function AboutGrid() {
       <header className="pgrid__head">
         <span className="pgrid__eyebrow">About</span>
         <h1 className="pgrid__title" id="about-title">
-          I understand the work before I automate it.
+          Healthcare operations, improved with practical automation.
         </h1>
         <p className="pgrid__lede">
-          Healthcare operations experience informs practical workflow and data improvements.
+          I help healthcare businesses and growing teams improve efficiency, reporting, and day-to-day processes.
         </p>
       </header>
 
       <div className="home__glass agrid__glass">
         <div className="agrid__copy">
           <p className="agrid__lead">
-            I understand the work before I automate it.
-            <span> Better workflows start with the real process.</span>
+            Better operations create room for better outcomes.
+            <span> Start by understanding the real process.</span>
           </p>
 
           <p className="agrid__note">
-            I'm a healthcare operations professional with experience in quality assurance, data mining, reporting, and workflow improvement. Repetitive tasks and disconnected systems can make everyday work harder than it needs to be. I use Excel, VBA, Google Sheets, SQL, and Power Automate to simplify processes and make information easier to manage. My approach is to understand and map the workflow, build a practical solution, and evaluate the result. I'm expanding into APIs, data integration, and AI-powered automation.
+            I'm a healthcare operations and AI automation specialist focused on operational efficiency, quality assurance, process improvement, workflow automation, reporting, and data processing. I work with healthcare businesses and clinics, as well as small and medium-sized businesses looking to improve how work gets done. My approach is to understand the current process, identify avoidable effort and potential revenue leaks, then scope practical improvements without making unsupported outcome claims.
           </p>
 
           <ul className="agrid__caps" role="list">
@@ -85,7 +85,7 @@ export default function AboutGrid() {
               </span>
               <span className="agrid__cell-copy">
                 <span className="agrid__cell-title">{profile.location}</span>
-                <span className="agrid__cell-meta">Location</span>
+                <span className="agrid__cell-meta">{profile.workArrangement} · {profile.clientRegions}</span>
               </span>
             </span>
 
