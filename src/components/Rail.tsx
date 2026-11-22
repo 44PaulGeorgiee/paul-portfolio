@@ -6,10 +6,9 @@ import {
   HomeIcon,
   FolderIcon,
   StackIcon,
-  CupIcon,
-  StarIcon,
   UserIcon,
   MessageIcon,
+  VlogIcon,
 } from './RailIcons'
 import { getTheme, toggleTheme, type Theme } from '@/lib/theme'
 import { profile } from '@/data/profile'
@@ -29,8 +28,7 @@ export const RAIL_LINKS = [
   { label: 'Home', to: '/', Icon: HomeIcon },
   { label: 'Projects', to: '/projects', Icon: FolderIcon },
   { label: 'Services', to: '/services', Icon: StackIcon },
-  { label: 'Showcase', to: '/showcase', Icon: CupIcon },
-  { label: 'Selected Results', to: '/testimonials', Icon: StarIcon },
+  { label: 'Journey Vlogs', to: '/vlogs', Icon: VlogIcon },
   { label: 'About', to: '/about', Icon: UserIcon },
   { label: 'FAQs / Contact', to: '/contact', Icon: MessageIcon },
 ] as const

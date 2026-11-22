@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { SealCheck, FlowArrow, Stack, Coffee } from '@/components/slab'
+import { SealCheck, FlowArrow, Stack, Coffee, VideoCamera } from '@/components/slab'
 import { profile } from '@/data/profile'
 import QuickMenu from './QuickMenu'
 
@@ -10,8 +10,7 @@ import QuickMenu from './QuickMenu'
  *                (theme + accessibility) - the rail's identity block, laid flat
  *   HomeStats    three proof facts (profile.stats), each named by a glyph so
  *                it reads at a glance
- *   HomeExplore  one shelf card per rail view in a snap row, then the first
- *                testimonial as a video stage
+ *   HomeExplore  a snap row of cards for key portfolio pages
  */
 
 export function HomeProfile() {
@@ -51,8 +50,8 @@ const TILES = [
   { n: '01', label: 'Projects', to: '/projects', title: 'Real workflows. Less manual work.', desc: 'Two internal QA workflow examples and four clearly labeled prototypes.', Icon: FlowArrow },
   { n: '02', label: 'Services', to: '/services', title: 'Automation built around your business.', desc: 'Practical process and reporting support.', Icon: Stack },
   { n: '03', label: 'Showcase', to: '/showcase', title: 'Workflow concepts', desc: 'Prototype examples, not client systems.', Icon: Coffee, accent: true },
-  { n: '04', label: 'Selected Results', to: '/testimonials', title: 'Work that reduces manual steps.', desc: 'Two operations automation examples.', Icon: FlowArrow },
-  { n: '05', label: 'About', to: '/about', title: `Hi, I'm ${profile.firstName}.`, desc: 'Healthcare operations and workflow improvement.', img: profile.avatarSrc },
+  { n: '04', label: 'About', to: '/about', title: `Hi, I'm ${profile.firstName}.`, desc: 'Healthcare operations and workflow improvement.', img: profile.avatarSrc },
+  { n: '05', label: 'Journey Vlogs', to: '/vlogs', title: 'Building an AI automation business.', desc: 'Follow my learning and business-building journey.', Icon: VideoCamera },
 ] as const
 
 export function HomeExplore() {

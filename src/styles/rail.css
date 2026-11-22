@@ -14,9 +14,17 @@
     height: 100%;
     padding: clamp(28px, 4vh, 52px) 30px 28px;
     overflow-y: auto;
-    scrollbar-width: none;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-strong) transparent;
   }
-  .rail::-webkit-scrollbar { display: none; }
+  .rail::-webkit-scrollbar { width: 6px; }
+  .rail::-webkit-scrollbar-track { background: transparent; }
+  .rail::-webkit-scrollbar-thumb {
+    background: var(--line-strong);
+    border-radius: var(--radius-pill);
+  }
 
   .rail__inner {
     display: flex;
@@ -24,6 +32,7 @@
     align-items: center;
     min-height: 100%;
   }
+  .rail__inner > * { flex-shrink: 0; }
 
   /* Tied to viewport height, not fixed: at 800px tall the fixed sizes pushed
      the column past the shell and the copyright scrolled out of sight. */

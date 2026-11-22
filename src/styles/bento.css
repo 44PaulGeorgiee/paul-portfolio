@@ -1,6 +1,6 @@
 /* ============================================
    HOME BENTO - one card per view
-   The showcase band of Home. Six raised paper cards on a 4x2 grid that fills
+   The showcase band of Home. Raised paper cards on a 4x2 grid that fills
    the elastic row; every card is a link and clips its own media, so the band
    can shrink with the viewport and Home never grows a scrollbar. Motion is
    transform-only on inner tracks. Light plates stay light in dark mode for
@@ -21,7 +21,7 @@
     grid-template-rows: repeat(2, minmax(0, 1fr));
   }
   .bento__card--projects { grid-column: span 2; }
-  .bento__card--quotes   { grid-column: span 2; }
+  .bento__card--vlog { grid-column: span 2; }
 }
 
 .bento__card {
@@ -122,6 +122,38 @@
    the drifting reel on the right. */
 .bento__card--projects { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 14px; }
 .bento__card--projects .bento__media { margin-top: 0; grid-row: 1; grid-column: 2; }
+.bento__card--vlog {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: 14px;
+}
+.bento__card--vlog .bento__media { grid-row: 1; grid-column: 2; }
+.bento__vlog-preview {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #101010;
+}
+.bento__vlog-preview img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.bento__vlog-play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.16);
+}
+.bento__vlog-play svg {
+  box-sizing: content-box;
+  padding: 10px;
+  border-radius: 12px;
+  background: #e62117;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.35));
+}
 .bento__reel {
   overflow: hidden;
   border-radius: 14px;
@@ -356,48 +388,16 @@
 .bento__card:hover .bento__offer-tile { background: var(--orange); color: var(--white); }
 .bento__card:hover .bento__offer-num { color: var(--orange-ink); }
 
-/* Testimonials: head left, review column drifting up on the right. */
-.bento__card--quotes { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); column-gap: 14px; }
-.bento__card--quotes .bento__media { margin-top: 0; grid-row: 1; grid-column: 2; }
-.bento__reviews {
-  overflow: hidden;
-  mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
-  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
-}
-.bento__reviews-track {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  animation: bento-drift-up 20s linear infinite;
-  animation-play-state: paused;
-}
-.bento__card:hover .bento__reviews-track { animation-play-state: running; }
-.bento__review {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  flex: none;
-  padding: 10px 12px;
-  border-radius: 12px;
-  background: var(--white);
-  box-shadow: inset 0 0 0 1px var(--line);
-}
-.bento__review-top { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--navy); }
-.bento__review-top img { width: 18px; height: 18px; border-radius: 5px; object-fit: contain; }
-.bento__review-top svg { color: var(--orange); }
-.bento__review-role { font-size: 11.5px; line-height: 1.4; color: var(--muted); }
-.bento__review-work { font-size: 11px; font-weight: 600; color: var(--orange-ink); }
-
 /* Below the shell breakpoint the grid has no fixed rows, so the tracks would
    set the card height. Cap the media instead, and let the two wide cards
    stack their media under the head - side by side they had 80px each. */
 @media (max-width: 1099px) {
-  .bento__reel, .bento__reviews, .bento__fan, .bento__chips, .bento__badge { max-height: 200px; }
+  .bento__reel, .bento__fan, .bento__chips, .bento__badge { max-height: 200px; }
   .bento__fan { min-height: 150px; }
-  .bento__card--projects,
-  .bento__card--quotes { display: flex; flex-direction: column; }
-  .bento__card--projects .bento__media,
-  .bento__card--quotes .bento__media { margin-top: clamp(8px, 1.2vh, 14px); height: 190px; }
+  .bento__card--projects { display: flex; flex-direction: column; }
+  .bento__card--projects .bento__media { margin-top: clamp(8px, 1.2vh, 14px); height: 190px; }
+  .bento__card--vlog { display: flex; flex-direction: column; grid-column: span 2; }
+  .bento__card--vlog .bento__media { width: 100%; max-height: 220px; }
   /* The reel runs sideways under the head: a row of browser windows at a
      size where a page crop reads as a page, not one giant hero. */
   .bento__reel {
@@ -415,15 +415,16 @@
 /* One column on phones: two 170px cards is a pair of slivers. */
 @media (max-width: 639px) {
   .bento { grid-template-columns: minmax(0, 1fr); }
+  .bento__card--vlog { grid-column: span 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bento__reel-track, .bento__chip-track, .bento__reviews-track { animation: none; }
+  .bento__reel-track, .bento__chip-track { animation: none; }
 }
 
 /* Phone type floor. */
 @media (max-width: 639px) {
   .bento__desc { font-size: 13px; }
-  .bento__badge-tag, .bento__review-work { font-size: 12px; }
+  .bento__badge-tag { font-size: 12px; }
   .bento__review-role { font-size: 12.5px; }
 }

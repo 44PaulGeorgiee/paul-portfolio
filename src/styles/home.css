@@ -1,9 +1,7 @@
 /* ============================================
-   HOME - the fixed viewport
-   Three bands in a grid of `auto auto 1fr`: the head, the tools marquee, and
-   the workflow. The workflow row is the elastic one, so a shorter viewport
-   shrinks the diagram instead of producing a scrollbar. Nothing here may add
-   height the panel cannot hold.
+   HOME
+   The head, tools marquee, and workflow. Content can exceed the viewport;
+   the shell panel scrolls so the full message and actions remain reachable.
    ============================================ */
 .home {
   display: flex;
@@ -14,16 +12,18 @@
 
 @media (min-width: 1100px) {
   .home {
-    height: 100%;
+    min-height: 100%;
+    height: auto;
     display: grid;
-    grid-template-rows: auto auto 1fr;
-    min-height: 0;
+    grid-template-rows: auto auto minmax(320px, auto);
     /* Without this a nowrap child sets the grid's min-content width and the
        whole column - marquee and workflow included - is laid out wider than
        the panel and clipped. The panel must stay authoritative. */
     min-width: 0;
   }
   .home__head { min-width: 0; }
+  .home__glass--showcase { min-height: 320px; }
+  .home__showcase > .bento { min-height: 300px; }
 }
 
 /* ---------- Head ---------- */
@@ -54,6 +54,19 @@
   align-items: center;
   gap: 10px;
   margin-top: clamp(12px, 1.8vh, 22px);
+}
+.home__clarity {
+  max-width: 78ch;
+  margin-top: clamp(8px, 1vh, 14px);
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--white) 74%, transparent);
+  color: var(--muted);
+  font-size: clamp(11.5px, 0.82vw, 13px);
+  font-weight: 600;
+  line-height: 1.55;
+  text-wrap: pretty;
 }
 .home__cta {
   display: inline-flex;
@@ -156,7 +169,7 @@
     0 30px 70px -40px rgba(0, 0, 0, 0.8);
 }
 @media (min-width: 1100px) {
-  .home__glass--showcase { height: 100%; display: grid; grid-template-rows: minmax(0, 1fr); }
+  .home__glass--showcase { display: grid; grid-template-rows: auto; }
 }
 
 /* ---------- Tools band ----------
@@ -199,11 +212,9 @@
   }
 }
 
-/* ---------- Showcase band ----------
-   `min-height: 0` is what lets the 1fr row actually shrink; without it the
-   grid floors at the reel's intrinsic height and the panel scrolls. */
+/* ---------- Showcase band ---------- */
 .home__showcase {
-  min-height: 0;
+  min-height: 300px;
   min-width: 0;
   display: grid;
   gap: clamp(16px, 2vw, 32px);
@@ -211,7 +222,10 @@
 
 .home__showcase > .bento { min-height: 0; }
 @media (min-width: 1100px) {
-  .home__showcase > .bento { height: 100%; }
+  .home__showcase > .bento {
+    height: auto;
+    grid-template-rows: repeat(2, minmax(240px, auto));
+  }
 }
 
 /* ---------- Autopilot in compact mode ----------

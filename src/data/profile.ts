@@ -71,13 +71,13 @@ export const profile: Profile = {
     { value: 'Healthcare', label: 'Operations', Icon: Briefcase },
   ],
   // The intro types this line, then flies it into the Home headline.
-  // Keep it short: two halves, 5-8 words total.
+  // The hero headline is split into two parts for the intro animation.
   displayName: {
-    line1: 'I Help Businesses Unlock More Profit',
-    line2: 'by Lowering Costs, Optimizing Processes, and Eliminating Revenue Leaks',
+    line1: 'Stop Revenue and Intake',
+    line2: 'Leaks for US Healthcare & SMBs.',
   },
   hero: {
-    body: 'I help healthcare businesses and growing teams improve operational efficiency through workflow automation, process improvement, reporting, and data processing—so they can identify avoidable costs and potential revenue leaks.',
+    body: 'AI Automation Specialist & Workflow Engineer with a BPO Quality Assurance background. I audit broken intake pipelines, normalize messy webhook payloads, and build resilient Make.com and Gemini AI systems that maximize your existing stack—without automating unnecessary bloat.',
     portraitSrc: '/avatar.svg',
     portraitAlt: 'Paul John Rosellosa',
   },

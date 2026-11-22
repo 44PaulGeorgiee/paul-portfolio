@@ -8,10 +8,9 @@ import { aiStack, type StackNode } from '@/data/ai-stack'
 import { useIsPhone } from '@/hooks/useMediaQuery'
 
 /**
- * Projects, as one viewport in Home's bento language: two described work
- * examples, one prototype concept, generic page-template previews, and a
- * grouped tools view. Cards open accessible detail dialogs or the existing
- * template carousel.
+ * Projects, in Home's bento language: case studies, prototype concepts,
+ * generic page-template previews, and a grouped tools view. Cards open
+ * accessible detail dialogs or the existing template carousel.
  *
  * The dialog is a portal at z 8000, under the funnel preview (9000) so the
  * barrel's own "open this page" dialog can still stack on top of it.
@@ -21,7 +20,7 @@ type Project = {
   index: string
   title: string
   desc: string
-  status?: 'LIVE' | 'INTERNAL' | 'PROTOTYPE' | 'BETA'
+  status?: 'LIVE' | 'INTERNAL' | 'PROTOTYPE' | 'BETA' | 'CASE STUDY'
   Icon: ComponentType<{ size?: number }>
   eyebrow: string
   Section: ComponentType
@@ -63,17 +62,23 @@ function ProcessPreview({ steps }: { steps: string[] }) {
 function ProjectDetail({
   status,
   title,
+  role,
   problem,
   description,
   outcome,
+  architecture,
+  verifiedOutcomes,
   tools,
   note,
 }: {
   status: string
   title: string
+  role?: string
   problem?: string
   description: string
   outcome?: string
+  architecture?: { title: string; description: string }[]
+  verifiedOutcomes?: string[]
   tools: string[]
   note: string
 }) {
@@ -87,14 +92,33 @@ function ProjectDetail({
         <article className="pdetail">
           <span className="pdetail__status">{status}</span>
           <h2 className="pdetail__title">{title}</h2>
+          {role && (
+            <>
+              <h3 className="pdetail__label">Role</h3>
+              <p className="pdetail__description">{role}</p>
+            </>
+          )}
           {problem && (
             <>
-              <h3 className="pdetail__label">Problem</h3>
+              <h3 className="pdetail__label">Problem &amp; Constraints</h3>
               <p className="pdetail__description">{problem}</p>
             </>
           )}
           <h3 className="pdetail__label">{problem ? 'Solution' : 'Description'}</h3>
           <p className="pdetail__description">{description}</p>
+          {architecture && (
+            <>
+              <h3 className="pdetail__label">Technical Architecture &amp; Process</h3>
+              <ol className="pdetail__steps">
+                {architecture.map((step) => (
+                  <li key={step.title}>
+                    <strong>{step.title}</strong>
+                    <p>{step.description}</p>
+                  </li>
+                ))}
+              </ol>
+            </>
+          )}
           <h3 className="pdetail__label">Tools described</h3>
           <ul className="pdetail__tools" role="list">
             {tools.map((tool) => <li key={tool}>{tool}</li>)}
@@ -103,6 +127,14 @@ function ProjectDetail({
             <>
               <h3 className="pdetail__label">Outcome</h3>
               <p className="pdetail__description">{outcome}</p>
+            </>
+          )}
+          {verifiedOutcomes && (
+            <>
+              <h3 className="pdetail__label">Verified Outcomes (Measured Operational Results)</h3>
+              <ul className="pdetail__outcomes">
+                {verifiedOutcomes.map((item) => <li key={item}>{item}</li>)}
+              </ul>
             </>
           )}
           <p className="pdetail__note">{note}</p>
@@ -143,6 +175,37 @@ const IntegrationConceptPanel = () => (
     description="Demonstrates API requests, JSON parsing, validation, error handling, data transformation, and spreadsheet output."
     tools={['Apps Script', 'REST API', 'JSON', 'Google Sheets']}
     note="Prototype demonstration only; this is not presented as a live or production integration."
+  />
+)
+
+const ContentEnginePanel = () => (
+  <ProjectDetail
+    status="CASE STUDY"
+    title="Automated Multi-Platform Content & Distribution Engine (Waterfall Architecture)"
+    role="Sole Architect & Workflow Engineer"
+    problem="Producing a weekly core video and repurposing it across YouTube, LinkedIn, Facebook, and GitHub required hours of manual drafting and formatting. The system had to run on a zero-cost/free-tier LLM constraint (Google Gemini free tier) without hallucinating technical details outside of actual daily work logs."
+    description="A waterfall workflow turns a structured daily work log into a long-form YouTube pillar script and a seven-day multi-platform publishing calendar, then records the outputs in Google Sheets."
+    architecture={[
+      {
+        title: 'Trigger & Ingestion',
+        description: 'Built an automated trigger in Make.com watching a structured Google Drive daily work log ("What I did today").',
+      },
+      {
+        title: 'Token-Optimized AI Processing',
+        description: 'Engineered a compressed system prompt referencing a master brand framework inside the Google Gemini module with strict JSON schema enforcement to stay within free-tier token and rate limits.',
+      },
+      {
+        title: 'Routing & State Management',
+        description: 'Used Make.com JSON Parsers, Routers, and Text Aggregators to split the payload into a long-form YouTube pillar script and a 7-day multi-platform calendar, automatically logging outputs into Google Sheets.',
+      },
+    ]}
+    tools={['Make.com', 'Google Gemini free tier', 'Google Drive', 'Google Sheets', 'JSON']}
+    verifiedOutcomes={[
+      'Zero API Spend: Operates reliably within Google Gemini free-tier limits via prompt compression and structured JSON parsing.',
+      'Hallucination Elimination: Grounding prompts strictly against daily technical logs eliminated fabricated claims in generated copy.',
+      'Standardized Production: Reduced weekly content planning and formatting to a single automated Sunday batch workflow.',
+    ]}
+    note="Architecture and process are described separately from the reported operational outcomes. The system uses source work logs to ground generated content."
   />
 )
 
@@ -215,14 +278,15 @@ const CallOutPreview = () => <ProcessPreview steps={['Excel', 'VBA', 'Outlook']}
 const IntegrationPreview = () => <ProcessPreview steps={['Form', 'API + JSON', 'Review']} />
 
 const PROJECTS: Project[] = [
-  { id: 'qa-feedback', cat: 'work', index: '01', status: 'INTERNAL', title: 'QA Feedback Automation', desc: 'Power Automate workflow streamlining QA feedback delivery.', Icon: () => <FlowArrow size={20} weight="duotone" />, eyebrow: 'Internal workflow', Section: QAFeedbackPanel, Preview: FeedbackPreview },
-  { id: 'qa-callout', cat: 'work', index: '02', status: 'INTERNAL', title: 'QA Call Out Card', desc: 'Excel VBA workflow preparing Outlook call-out communications.', Icon: () => <Database size={20} weight="duotone" />, eyebrow: 'Internal workflow', Section: QACallOutPanel, Preview: CallOutPreview },
-  { id: 'integration-concept', cat: 'prototype', index: '03', status: 'PROTOTYPE', title: 'API Integration and Data Processing Workflow', desc: 'API requests, JSON parsing, validation, error handling, transformation, and sheet output.', Icon: () => <Database size={20} weight="duotone" />, eyebrow: 'Prototype', Section: IntegrationConceptPanel, Preview: IntegrationPreview },
-  { id: 'appointment-concept', cat: 'prototype', index: '04', status: 'PROTOTYPE', title: 'Appointment Booking and Follow-Up Automation', desc: 'Scheduling, confirmations, reminders, rescheduling, and reporting concept.', Icon: () => <FlowArrow size={20} weight="duotone" />, eyebrow: 'Prototype', Section: AppointmentConceptPanel, Preview: () => <ProcessPreview steps={['Schedule', 'Confirm', 'Remind', 'Report']} /> },
-  { id: 'lead-concept', cat: 'prototype', index: '05', status: 'PROTOTYPE', title: 'Lead Capture and Follow-Up Workflow', desc: 'Lead capture, pipeline configuration, follow-up, and reporting concept.', Icon: () => <FlowArrow size={20} weight="duotone" />, eyebrow: 'Prototype', Section: LeadConceptPanel, Preview: () => <ProcessPreview steps={['Capture', 'Pipeline', 'Follow up']} /> },
-  { id: 'dashboard-concept', cat: 'prototype', index: '06', status: 'PROTOTYPE', title: 'Business Operations and Performance Dashboard', desc: 'Data cleaning, KPI definition, dashboards, and reporting automation concept.', Icon: () => <Database size={20} weight="duotone" />, eyebrow: 'Prototype', Section: DashboardConceptPanel, Preview: () => <ProcessPreview steps={['Clean data', 'KPIs', 'Dashboard']} /> },
-  { id: 'templates', cat: 'sites', index: '07', title: 'Website Template Previews', desc: 'Generated page layouts for exploring structure. These are not client sites or workflow demos.', Icon: GlobeIcon, eyebrow: 'Template gallery', Section: BarrelPanel, Preview: FunnelsPreview },
-  { id: 'tools', cat: 'tools', index: '08', title: 'Verified Technology Stack', desc: 'Tools and technologies listed for operations, analytics, development, and automation.', Icon: SparkIcon, eyebrow: 'Technology stack', Section: AIWindow, Preview: AIPreview },
+  { id: 'content-engine', cat: 'work', index: '01', status: 'CASE STUDY', title: 'Automated Multi-Platform Content & Distribution Engine (Waterfall Architecture)', desc: 'A grounded, token-optimized Make.com and Gemini workflow for content planning and distribution.', Icon: () => <FlowArrow size={20} weight="duotone" />, eyebrow: 'Automation case study', Section: ContentEnginePanel, Preview: () => <ProcessPreview steps={['Drive log', 'Gemini JSON', 'Router', 'Sheets']} />, span: 2 },
+  { id: 'qa-feedback', cat: 'work', index: '02', status: 'INTERNAL', title: 'QA Feedback Automation', desc: 'Power Automate workflow streamlining QA feedback delivery.', Icon: () => <FlowArrow size={20} weight="duotone" />, eyebrow: 'Internal workflow', Section: QAFeedbackPanel, Preview: FeedbackPreview },
+  { id: 'qa-callout', cat: 'work', index: '03', status: 'INTERNAL', title: 'QA Call Out Card', desc: 'Excel VBA workflow preparing Outlook call-out communications.', Icon: () => <Database size={20} weight="duotone" />, eyebrow: 'Internal workflow', Section: QACallOutPanel, Preview: CallOutPreview },
+  { id: 'integration-concept', cat: 'prototype', index: '04', status: 'PROTOTYPE', title: 'API Integration and Data Processing Workflow', desc: 'API requests, JSON parsing, validation, error handling, transformation, and sheet output.', Icon: () => <Database size={20} weight="duotone" />, eyebrow: 'Prototype', Section: IntegrationConceptPanel, Preview: IntegrationPreview },
+  { id: 'appointment-concept', cat: 'prototype', index: '05', status: 'PROTOTYPE', title: 'Appointment Booking and Follow-Up Automation', desc: 'Scheduling, confirmations, reminders, rescheduling, and reporting concept.', Icon: () => <FlowArrow size={20} weight="duotone" />, eyebrow: 'Prototype', Section: AppointmentConceptPanel, Preview: () => <ProcessPreview steps={['Schedule', 'Confirm', 'Remind', 'Report']} /> },
+  { id: 'lead-concept', cat: 'prototype', index: '06', status: 'PROTOTYPE', title: 'Lead Capture and Follow-Up Workflow', desc: 'Lead capture, pipeline configuration, follow-up, and reporting concept.', Icon: () => <FlowArrow size={20} weight="duotone" />, eyebrow: 'Prototype', Section: LeadConceptPanel, Preview: () => <ProcessPreview steps={['Capture', 'Pipeline', 'Follow up']} /> },
+  { id: 'dashboard-concept', cat: 'prototype', index: '07', status: 'PROTOTYPE', title: 'Business Operations and Performance Dashboard', desc: 'Data cleaning, KPI definition, dashboards, and reporting automation concept.', Icon: () => <Database size={20} weight="duotone" />, eyebrow: 'Prototype', Section: DashboardConceptPanel, Preview: () => <ProcessPreview steps={['Clean data', 'KPIs', 'Dashboard']} /> },
+  { id: 'templates', cat: 'sites', index: '08', title: 'Website Template Previews', desc: 'Generated page layouts for exploring structure. These are not client sites or workflow demos.', Icon: GlobeIcon, eyebrow: 'Template gallery', Section: BarrelPanel, Preview: FunnelsPreview },
+  { id: 'tools', cat: 'tools', index: '09', title: 'Verified Technology Stack', desc: 'Tools and technologies listed for operations, analytics, development, and automation.', Icon: SparkIcon, eyebrow: 'Technology stack', Section: AIWindow, Preview: AIPreview },
 ]
 
 /** The icon tile, or the real marks stacked horizontally in its place. */
@@ -303,7 +367,7 @@ export default function ProjectsGrid() {
   }, [])
 
   return (
-    <section className="pgrid" aria-labelledby="projects-title">
+    <section className="pgrid pgrid--projects" aria-labelledby="projects-title">
       <header className="pgrid__head">
         <span className="pgrid__eyebrow">Projects</span>
         <h1 className="pgrid__title" id="projects-title">
@@ -311,7 +375,7 @@ export default function ProjectsGrid() {
         </h1>
         <p className="pgrid__lede">Practical automation projects built around everyday operational problems.</p>
         <p className="pgrid__lede pgrid__status-guide">
-          LIVE: publicly accessible · INTERNAL: used in real workflows · PROTOTYPE: demonstration or concept · BETA: experimental
+          CASE STUDY: described system and outcomes · INTERNAL: used in real workflows · PROTOTYPE: demonstration or concept
         </p>
       </header>
 

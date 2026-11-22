@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { ArrowUpRight, VideoCamera } from '@/components/slab'
+import { LATEST_JOURNEY_VIDEO } from '@/data/vlogs'
 
 const PLAYLISTS = [
   { id: 'journey', label: 'My Journey', description: 'Building an AI automation business' },
@@ -65,7 +66,7 @@ export default function Vlogs() {
             <article className="vlogs__episode">
               <div className="vlogs__player">
                 <iframe
-                  src="https://www.youtube-nocookie.com/embed/pMqr7xk6BCs"
+                  src={`https://www.youtube-nocookie.com/embed/${LATEST_JOURNEY_VIDEO.videoId}`}
                   title="My Journey Building an AI Automation Business"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerPolicy="strict-origin-when-cross-origin"
@@ -78,13 +79,11 @@ export default function Vlogs() {
                   <VideoCamera size={16} weight="fill" aria-hidden="true" />
                   Journey vlog · 01
                 </span>
-                <h3>Building an AI automation business</h3>
-                <p>
-                  Follow along as I develop my skills, explore AI automation, and work toward building a business around it.
-                </p>
+                <h3>{LATEST_JOURNEY_VIDEO.title}</h3>
+                <p>{LATEST_JOURNEY_VIDEO.description}</p>
                 <a
                   className="vlogs__youtube"
-                  href="https://youtu.be/pMqr7xk6BCs"
+                  href={`https://youtu.be/${LATEST_JOURNEY_VIDEO.videoId}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >

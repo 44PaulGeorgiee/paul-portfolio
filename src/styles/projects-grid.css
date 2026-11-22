@@ -1,8 +1,5 @@
 /* ============================================
-   PROJECTS - the fixed viewport
-   A head and six cards on one screen, same object language as Home's bento:
-   raised paper, 1px border, plated icon tile, orange for the index and the
-   arrow. Each card opens the real section in the dialog below.
+   PROJECTS - naturally scrolling case studies and cards
    ============================================ */
 .pgrid {
   display: flex;
@@ -13,11 +10,23 @@
 }
 @media (min-width: 1100px) {
   .pgrid {
-    height: 100%;
+    min-height: 100%;
+    height: auto;
     display: grid;
-    grid-template-rows: auto 1fr;
-    min-height: 0;
+    grid-template-rows: auto auto;
   }
+}
+.pgrid--projects .pgrid__glass { height: auto; }
+@media (min-width: 1100px) {
+  .pgrid--projects .pgrid__glass { display: block; }
+  .pgrid--projects .bento--projects {
+    display: grid;
+    grid-template-rows: none;
+    grid-auto-rows: minmax(250px, auto);
+    height: auto;
+  }
+  .pgrid--projects .bento__card { min-height: 250px; }
+  .pgrid--projects .bento__card--wide { min-height: 300px; }
 }
 
 .pgrid__head { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
@@ -361,6 +370,10 @@
 .pdetail__label { margin-top: 28px; color: var(--navy); font-size: 13px; text-transform: uppercase; }
 .pdetail__tools { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; padding: 0; list-style: none; }
 .pdetail__tools li { padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; color: var(--navy); font-size: 13px; }
+.pdetail__steps, .pdetail__outcomes { display: grid; gap: 12px; margin: 12px 0 0; padding-left: 22px; color: var(--muted); font-size: 15px; line-height: 1.65; }
+.pdetail__steps strong { color: var(--navy); }
+.pdetail__steps p { margin: 4px 0 0; }
+.pdetail__outcomes li::marker { color: var(--orange-ink); }
 .pdetail__note { margin-top: 28px; padding-left: 12px; border-left: 2px solid var(--orange); color: var(--muted); font-size: 13px; line-height: 1.6; }
 
 .ppanel__tabs {

@@ -8,9 +8,11 @@ import {
   Stack,
   FlowArrow,
   Database,
+  VideoCamera,
 } from '@/components/slab'
 import { aiStack, type StackNode } from '@/data/ai-stack'
 import { profile } from '@/data/profile'
+import { LATEST_JOURNEY_VIDEO } from '@/data/vlogs'
 
 /**
  * Home's showcase: each card links to a portfolio view and summarizes its
@@ -28,11 +30,6 @@ const OFFERS = [
   { Icon: User, title: 'Process audits', note: 'Bottlenecks and repeat work' },
   { Icon: FlowArrow, title: 'Privacy-aware planning', note: 'Access and data handling' },
 ] as const
-
-const WORK_ITEMS = [
-  { name: 'QA Feedback Automation', work: 'Power Automate · estimated ~10 hours saved weekly.' },
-  { name: 'QA Call Out Card', work: 'Excel, VBA, Outlook · estimated ~10 hours saved weekly.' },
-]
 
 // Three photos of you, fanned. Small copies are fine - the fan shows them under 100px.
 const PHOTOS = [profile.avatarSrc, '/avatar.svg?2', '/avatar.svg?3']
@@ -71,16 +68,19 @@ export default function HomeBento() {
 
   return (
     <nav className="bento" aria-label="Explore the portfolio">
-      {/* Selected work examples in the existing compact project card. */}
+      {/* Project overview; detailed examples live on the Projects page. */}
       <Link to="/projects" className="bento__card bento__card--projects">
-        <CardHead Icon={FolderOpen} title="Selected work" desc="Two internal QA automation workflows with estimated time savings." />
+        <CardHead Icon={FolderOpen} title="Projects" desc="Workflow projects and prototype concepts." />
         <ul className="bento__media bento__offers" role="list" aria-hidden="true">
-          {WORK_ITEMS.map((item, i) => (
-            <li key={item.name} className="bento__offer" style={{ '--i': i } as React.CSSProperties}>
+          {[
+            { title: 'Operations workflows', note: 'Practical process improvements' },
+            { title: 'Prototype concepts', note: 'Ideas and experiments in progress' },
+          ].map((item, i) => (
+            <li key={item.title} className="bento__offer" style={{ '--i': i } as React.CSSProperties}>
               <span className="bento__offer-tile"><FlowArrow size={15} weight="duotone" /></span>
               <span className="bento__offer-text">
-                <span className="bento__offer-title">{item.name}</span>
-                <span className="bento__offer-note">{item.work}</span>
+                <span className="bento__offer-title">{item.title}</span>
+                <span className="bento__offer-note">{item.note}</span>
               </span>
             </li>
           ))}
@@ -150,22 +150,20 @@ export default function HomeBento() {
         </ul>
       </Link>
 
-      {/* Work examples, not fabricated testimonials. */}
-      <Link to="/testimonials" className="bento__card bento__card--quotes">
-        <CardHead Icon={FlowArrow} title="Selected results" desc="Estimated time savings from two internal QA automation workflows." />
-        <div className="bento__media bento__reviews" aria-hidden="true">
-          <div className="bento__reviews-track">
-            {[...WORK_ITEMS, ...WORK_ITEMS].map((item, i) => (
-              <span key={i} className="bento__review">
-                <span className="bento__review-top">
-                  <FlowArrow size={14} weight="duotone" />
-                  <b>{item.name}</b>
-                </span>
-                <span className="bento__review-role">Work example</span>
-                <span className="bento__review-work">{item.work}</span>
-              </span>
-            ))}
-          </div>
+      <Link to="/vlogs" className="bento__card bento__card--vlog">
+        <CardHead
+          Icon={VideoCamera}
+          title="Latest journey vlog"
+          desc={LATEST_JOURNEY_VIDEO.title}
+        />
+        <div className="bento__media bento__vlog-preview" aria-hidden="true">
+          <img
+            src={`https://img.youtube.com/vi/${LATEST_JOURNEY_VIDEO.videoId}/hqdefault.jpg`}
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+          <span className="bento__vlog-play"><VideoCamera size={22} weight="fill" /></span>
         </div>
       </Link>
     </nav>

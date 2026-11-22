@@ -8,20 +8,18 @@ import { useScrollReveal } from '@/hooks/useScrollReveal'
 import { useIsPhone } from '@/hooks/useMediaQuery'
 
 /**
- * Home. One viewport, three bands, no scroll:
+ * Home. Three bands:
  *
  *   head       the display line the intro writes, then the lede
  *   tools      "Tools I work with" beside the marquee, on its own plate
  *   showcase   the bento - one card per view, see HomeBento - on its own
  *
- * The grid is `auto auto 1fr` so the showcase absorbs the slack instead of
- * pushing the panel into a scrollbar. Every other view scrolls; this one is
- * laid out to the box.
+ * The page scrolls naturally on desktop as well as mobile so the full pitch,
+ * role/stack line, and calls to action remain reachable at shorter heights.
  *
  * On a phone the page becomes an app screen: a profile header where the rail
  * used to be, the proof stats under the lede, and the bento replaced by a
- * snap row of tiles (HomeMobile). The CTA leaves the head - the tab bar's
- * Contact action carries it on every screen.
+ * snap row of tiles (HomeMobile). The primary CTA leads to Contact.
  *
  * `.home__title` is also the intro's landing target: IntroOverlay measures it
  * and flies its copy into this exact rect, so the line the visitor watched
@@ -44,20 +42,24 @@ export default function Home() {
         </div>
 
         <p className="home__lede">{hero.body}</p>
+        <p className="home__clarity">
+          Target Roles: AI Automation Specialist | Workflow Engineer | Operations &amp; RevOps Automation • Core Stack: Make.com, Google Gemini API, Webhooks, Google Workspace, n8n, Verint AQM
+        </p>
         <div className="home__actions">
+          <Link className="home__cta" to="/contact">
+            Book a Workflow &amp; Leak Audit
+            <CalendarBlank size={16} weight="bold" aria-hidden="true" />
+          </Link>
+          {/* Add Paul_Rosellosa_Resume.pdf to public/ before publishing this link. */}
           <a
-            className="home__cta"
-            href="https://calendar.app.google/fZQJPcyKfxVgwnp1A"
+            className="home__cta home__cta--secondary"
+            href="/Paul_Rosellosa_Resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Curious about the untapped opportunities within your operations? Let's find out.
-            <CalendarBlank size={16} weight="bold" aria-hidden="true" />
-          </a>
-          <Link className="home__cta home__cta--secondary" to="/projects">
-            View My Projects
+            View Résumé &amp; Timeline
             <ArrowUpRight size={16} weight="bold" aria-hidden="true" />
-          </Link>
+          </a>
         </div>
         {phone && <HomeStats />}
       </div>

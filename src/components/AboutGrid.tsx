@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom'
 import { profile } from '@/data/profile'
 
 /**
- * AboutGrid - the About view as a fixed viewport.
+ * AboutGrid - the About view with naturally flowing content.
  *
  * One glass sheet, two columns: who you are on the left, the illustration
- * on the right. Sized to the panel, so nothing here scrolls.
+ * on the right. The timeline and bio remain part of the document flow.
  *
  * The left column is a ladder, not a paragraph block: one display statement,
  * one line of context, then the four things you do - each carrying the marks
@@ -42,14 +42,27 @@ export default function AboutGrid() {
 
       <div className="home__glass agrid__glass">
         <div className="agrid__copy">
-          <p className="agrid__lead">
-            Better operations create room for better outcomes.
-            <span> Start by understanding the real process.</span>
+          <p className="agrid__note">
+            I help healthcare clinics and SMBs fix operational bottlenecks, automate critical workflows, and recover lost revenue using AI, Make.com, and smart system design.
           </p>
 
-          <p className="agrid__note">
-            I'm a healthcare operations and AI automation specialist focused on operational efficiency, quality assurance, process improvement, workflow automation, reporting, and data processing. I work with healthcare businesses and clinics, as well as small and medium-sized businesses looking to improve how work gets done. My approach is to understand the current process, identify avoidable effort and potential revenue leaks, then scope practical improvements without making unsupported outcome claims.
-          </p>
+          <section className="agrid__timeline" aria-labelledby="experience-title">
+            <h2 className="agrid__timeline-title" id="experience-title">Experience &amp; Credentials</h2>
+            <ol className="agrid__timeline-list">
+              <li className="agrid__timeline-item">
+                <h3>AI Automation Specialist &amp; Workflow Engineer <span>(2025 – Present)</span></h3>
+                <p>Design and deploy end-to-end automation scenarios in Make.com and n8n focused on lead capture, payload normalization, and automated asset delivery for US SMB and healthcare workflows.</p>
+              </li>
+              <li className="agrid__timeline-item">
+                <h3>Quality Analyst — Business Process Outsourcing <span>(Prior)</span></h3>
+                <p>Audited operational workflows, enforced strict performance standards, and drove process compliance using Verint AQM—bringing a QA auditor's mindset to identifying bottlenecks and edge-case failures before building automations.</p>
+              </li>
+              <li className="agrid__timeline-item">
+                <h3>Certifications &amp; Technical Training</h3>
+                <p>Google AI Studio, GitHub Copilot, n8n, Make.com Multi-Module Architecture, TESDA Driving NC II Certification (2026).</p>
+              </li>
+            </ol>
+          </section>
 
           <ul className="agrid__caps" role="list">
             {CAPABILITIES.map((c) => (

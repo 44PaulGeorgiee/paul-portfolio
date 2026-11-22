@@ -62,7 +62,6 @@ type Service = {
   chip: string
   logos: string[]
   bullets: string[]
-  proof?: string
   Icon: typeof FlowArrow
 }
 
@@ -74,7 +73,6 @@ const SERVICES: Service[] = [
     chip: 'Workflow',
     logos: [],
     bullets: ['Workflow assessment', 'Automation design', 'Workflow implementation', 'Testing', 'Documentation'],
-    proof: 'QA Feedback Automation · QA Call Out Card',
     Icon: FlowArrow,
   },
   {
@@ -215,7 +213,6 @@ export default function ServicesGrid() {
                     </li>
                   ))}
                 </ul>
-                {s.proof && <p className="sgrid__proof">Related work: {s.proof}</p>}
               </li>
             ))}
           </ul>
