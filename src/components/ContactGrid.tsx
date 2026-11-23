@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { PaperPlaneTilt, CheckCircle, WarningCircle, EnvelopeSimple, ArrowUpRight, CaretDown, CalendarBlank } from '@/components/slab'
 import { FAQS } from '@/data/faqs'
 import { profile } from '@/data/profile'
-import { readLead, submitLead, SubmitError, ENDPOINT, MAX_NAME, MAX_EMAIL, MAX_MESSAGE, type SubmitResult } from '@/lib/contact'
+import { readLead, submitLead, SubmitError, MAX_NAME, MAX_EMAIL, MAX_MESSAGE, type SubmitResult } from '@/lib/contact'
 
 /**
  * ContactGrid - the Contact view as a fixed viewport.
@@ -12,9 +12,8 @@ import { readLead, submitLead, SubmitError, ENDPOINT, MAX_NAME, MAX_EMAIL, MAX_M
  * the form itself on the right. Sized to the panel, so
  * nothing here scrolls; the message box takes whatever height is left.
  *
- * Submission goes through lib/contact.ts, which is the one place a form
- * backend gets wired. Until it is, the same call opens the visitor's mail
- * client with the message laid out, and the success copy says so.
+ * Submission goes through the same-origin /api/contact route; the Make
+ * webhook URL is held server-side and never sent to the browser.
  */
 
 type Status = { kind: 'idle' } | { kind: 'sending' } | { kind: 'error'; note: string } | { kind: 'sent'; via: SubmitResult['via'] }
@@ -36,7 +35,8 @@ export default function ContactGrid() {
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const lead = readLead(new FormData(e.currentTarget))
+    const form = e.currentTarget
+    const lead = readLead(new FormData(form))
     if (!lead) {
       setStatus({ kind: 'error', note: 'Add your name, a real email, and a short note.' })
       setShake((n) => n + 1)
@@ -45,6 +45,7 @@ export default function ContactGrid() {
     setStatus({ kind: 'sending' })
     try {
       const [result] = await Promise.all([submitLead(lead), wait(FLIGHT_MS)])
+      form.reset()
       setStatus({ kind: 'sent', via: result.via })
     } catch (err) {
       const note = err instanceof SubmitError ? err.message : 'That did not go through. Email me directly instead.'
@@ -141,12 +142,10 @@ export default function ContactGrid() {
                 <CheckCircle size={30} weight="fill" />
               </span>
               <h2 className="cgrid__done-title">
-                {status.via === 'webhook' ? 'Submission accepted.' : 'Draft ready to send.'}
+                Message sent.
               </h2>
               <p className="cgrid__done-body">
-                {status.via === 'webhook'
-                  ? 'The configured endpoint accepted your submission.'
-                  : 'Your mail app has a draft. Review it and press send to complete the handoff.'}
+                Thanks for reaching out. Your message has been delivered.
               </p>
               <button type="button" className="cgrid__again" onClick={() => setStatus({ kind: 'idle' })}>
                 Write another
@@ -165,16 +164,10 @@ export default function ContactGrid() {
                 aria-hidden="true"
                 className="cgrid__trap"
               />
-              <div className="cgrid__row">
-                <label className="cgrid__field">
-                  <span className="cgrid__label">First name</span>
-                  <input type="text" name="firstName" autoComplete="given-name" required maxLength={MAX_NAME} placeholder="First name" />
-                </label>
-                <label className="cgrid__field">
-                  <span className="cgrid__label">Last name</span>
-                  <input type="text" name="lastName" autoComplete="family-name" required maxLength={MAX_NAME} placeholder="Last name" />
-                </label>
-              </div>
+              <label className="cgrid__field">
+                <span className="cgrid__label">Name</span>
+                <input type="text" name="name" autoComplete="name" required maxLength={MAX_NAME} placeholder="Your name" />
+              </label>
 
               <label className="cgrid__field">
                 <span className="cgrid__label">Email</span>
@@ -211,9 +204,7 @@ export default function ContactGrid() {
                   </span>
                 ) : (
                   <span className="cgrid__hint">
-                    {ENDPOINT
-                      ? 'The form sends your message to the configured contact endpoint.'
-                      : 'The form prepares an email draft for you to review and send.'}
+                    Your message is sent securely through the contact form.
                   </span>
                 )}
               </div>

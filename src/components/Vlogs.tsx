@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { ArrowUpRight, VideoCamera } from '@/components/slab'
-import { LATEST_JOURNEY_VIDEO } from '@/data/vlogs'
+import { JOURNEY_VIDEOS } from '@/data/vlogs'
 
 const PLAYLISTS = [
   { id: 'journey', label: 'My Journey', description: 'Building an AI automation business' },
@@ -13,6 +13,7 @@ type PlaylistId = (typeof PLAYLISTS)[number]['id']
 export default function Vlogs() {
   const [activePlaylist, setActivePlaylist] = useState<PlaylistId>('journey')
   const hasJourneyVideo = activePlaylist === 'journey'
+  const journeyVideoCount = JOURNEY_VIDEOS.length
 
   return (
     <section className="pgrid vlogs" aria-labelledby="vlogs-title">
@@ -46,8 +47,8 @@ export default function Vlogs() {
                 <span className="vlogs__playlist-name">{playlist.label}</span>
                 <span className="vlogs__playlist-description">{playlist.description}</span>
               </span>
-              <span className="vlogs__playlist-count" aria-label={hasJourneyVideo && playlist.id === 'journey' ? '1 video' : '0 videos'}>
-                {playlist.id === 'journey' ? '01' : '00'}
+              <span className="vlogs__playlist-count" aria-label={playlist.id === 'journey' ? `${journeyVideoCount} videos` : '0 videos'}>
+                {playlist.id === 'journey' ? String(journeyVideoCount).padStart(2, '0') : '00'}
               </span>
             </button>
           ))}
@@ -59,39 +60,41 @@ export default function Vlogs() {
               <span className="vlogs__eyebrow">Video library</span>
               <h2>{PLAYLISTS.find((playlist) => playlist.id === activePlaylist)?.label}</h2>
             </div>
-            <span className="vlogs__content-count">{hasJourneyVideo ? '1 video' : 'No videos yet'}</span>
+            <span className="vlogs__content-count">{hasJourneyVideo ? `${journeyVideoCount} videos` : 'No videos yet'}</span>
           </header>
 
           {hasJourneyVideo ? (
-            <article className="vlogs__episode">
-              <div className="vlogs__player">
-                <iframe
-                  src={`https://www.youtube-nocookie.com/embed/${LATEST_JOURNEY_VIDEO.videoId}`}
-                  title="My Journey Building an AI Automation Business"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
-                />
-              </div>
+            JOURNEY_VIDEOS.map((video, index) => (
+              <article className="vlogs__episode" key={video.videoId}>
+                <div className="vlogs__player">
+                  <iframe
+                    src={`https://www.youtube-nocookie.com/embed/${video.videoId}`}
+                    title={video.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  />
+                </div>
 
-              <div className="vlogs__details">
-                <span className="vlogs__eyebrow">
-                  <VideoCamera size={16} weight="fill" aria-hidden="true" />
-                  Journey vlog · 01
-                </span>
-                <h3>{LATEST_JOURNEY_VIDEO.title}</h3>
-                <p>{LATEST_JOURNEY_VIDEO.description}</p>
-                <a
-                  className="vlogs__youtube"
-                  href={`https://youtu.be/${LATEST_JOURNEY_VIDEO.videoId}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Open video on YouTube
-                  <ArrowUpRight size={16} weight="bold" aria-hidden="true" />
-                </a>
-              </div>
-            </article>
+                <div className="vlogs__details">
+                  <span className="vlogs__eyebrow">
+                    <VideoCamera size={16} weight="fill" aria-hidden="true" />
+                    Journey vlog · {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <h3>{video.title}</h3>
+                  <p>{video.description}</p>
+                  <a
+                    className="vlogs__youtube"
+                    href={`https://youtu.be/${video.videoId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Open video on YouTube
+                    <ArrowUpRight size={16} weight="bold" aria-hidden="true" />
+                  </a>
+                </div>
+              </article>
+            ))
           ) : (
             <div className="vlogs__empty">
               <span className="vlogs__empty-icon">

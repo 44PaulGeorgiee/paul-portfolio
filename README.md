@@ -29,6 +29,8 @@ npm run build      # typecheck + production build to dist/
 npm run lint       # ESLint with the TypeScript parser and the React hooks rules
 ```
 
+The contact API is a Vercel serverless function in `api/contact.ts`. Use `vercel dev` to run the Vercel function locally; `npm run dev` starts only the Vite frontend.
+
 ## Make it yours
 
 Update the content in the owning data file or view component. Keep prototype concepts clearly labeled, and only add project results, credentials, testimonials, and public contact details that you can verify.
@@ -48,7 +50,7 @@ Update the content in the owning data file or view component. Keep prototype con
 | Selected work results (no testimonials published) | `src/components/TestimonialsGrid.tsx` |
 | Contact email and social links | `src/data/profile.ts` |
 | Calendar CTA | `src/components/Home.tsx`, `src/components/ContactGrid.tsx` |
-| Contact form | `src/lib/contact.ts` (defaults to a mail-app draft; set `VITE_CONTACT_ENDPOINT` to submit to a configured endpoint) |
+| Contact form | `src/lib/contact.ts` posts `{ name, email, message }` to the server-side `api/contact.ts` route; set `MAKE_WEBHOOK_URL` in `.env.local` for local Vercel development and in Vercel Project Environment Variables before deploying |
 | SEO, share image, favicon | `index.html`, `public/favicon.svg` |
 | Colors | `src/styles/tokens.css` |
 | Privacy / Terms | `src/components/Privacy.tsx`, `src/components/ToS.tsx` |
